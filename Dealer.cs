@@ -48,9 +48,7 @@ public static class Dealer
     {
         Deck = CreateDeck(8);
         Deck.Shuffle();
-        Console.WriteLine("Reshuffling deck. (A reshuffle occurs when there are 234 or less cards in the deck)");
-        
-        GameManager.DisplayPressEnter();
+        Console.WriteLine("\nReshuffling deck. (A reshuffle occurs when there are 234 or less cards in the deck)");
     }
 
     public static void DealCard(this Hand hand, Queue<Card> deck, bool dealtCardIsToBeRevealed)

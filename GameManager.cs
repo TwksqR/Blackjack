@@ -76,17 +76,17 @@ public static class GameManager
 
     public static void PlayGame()
     {
+        int roundNumber = 0;
+
         // NOTE: Comment to play with unshuffled deck
         //Dealer.Deck = new Queue<Card>(Dealer.Deck.Shuffle());
         Dealer.Deck.Shuffle();
 
         do
         {
-            PlayRound();
+            roundNumber++;
 
-            Console.Clear();
-
-            Console.WriteLine($"Cards remaining in deck: {Dealer.Deck.Count}\n");
+            PlayRound(roundNumber);
 
             for (int i = 0; i < Players.Count; i++)
             {
@@ -134,14 +134,21 @@ public static class GameManager
         while (Players.Count > 0);
     }
 
-    public static void PlayRound()
+    public static void PlayRound(int roundNumber)
     {
         // TODO: Fix deal order (although it's completely unecessary, It'd be cool if the cards were dealt one to each player at a time)
+        Console.Clear();
+
+        WriteColoredLine($"Round {roundNumber}", ConsoleColor.Magenta);
         
+        Console.WriteLine($"\n{Dealer.Deck.Count} cards remaining in the deck");
+
         if (Dealer.Deck.Count <= 234)
         {
             Dealer.ReshuffleDeck();
         }
+
+        Thread.Sleep(2000);
 
         Dealer.Hand.Cards.Clear();
 
