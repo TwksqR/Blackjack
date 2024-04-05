@@ -2,7 +2,7 @@ namespace Blackjack;
 
 public static class Dealer
 {
-    public static Queue<Card> Deck { get; set; } = CreateDeck(6);
+    public static Queue<Card> Deck { get; private set; } = CreateDeck(8);
 
     public static Hand Hand { get; } = new();
 

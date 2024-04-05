@@ -77,7 +77,6 @@ public static class GameManager
     {
         int roundNumber = 0;
 
-        // NOTE: Comment to play with unshuffled deck
         //Dealer.Deck = new Queue<Card>(Dealer.Deck.Shuffle());
         Dealer.Deck.Shuffle();
 
