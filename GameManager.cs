@@ -133,6 +133,9 @@ public static class GameManager
 
     public static void PlayRound(int roundNumber)
     {
+        int minimumBet = 1;
+        int maximumBet = 50;
+
         Console.Clear();
 
         WriteColoredLine($"Round {roundNumber}", ConsoleColor.Magenta);
@@ -161,10 +164,10 @@ public static class GameManager
             {
                 Console.Clear();
 
-                Console.WriteLine($"{player.Name}, enter your bet.");
+                Console.WriteLine($"{player.Name}, enter your bet. (min: {string.Format("{0:C}", minimumBet)}, max: {string.Format("{0:C}", maximumBet)}, must be a whole number)");
                 TryReadInt($"Winnings: {string.Format("{0:C}", player.Winnings)}", ConsoleColor.Green, out playerBet);
 
-                playerBetIsValid = (playerBet <= player.Winnings) && (playerBet >= 1);
+                playerBetIsValid = (playerBet <= player.Winnings) && (playerBet >= minimumBet) && (playerBet <= maximumBet);
             }
             while (!playerBetIsValid);
             
