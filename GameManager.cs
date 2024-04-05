@@ -77,7 +77,8 @@ public static class GameManager
     public static void PlayGame()
     {
         // NOTE: Comment to play with unshuffled deck
-        Dealer.Deck = new Queue<Card>(Dealer.Deck.Shuffle());
+        //Dealer.Deck = new Queue<Card>(Dealer.Deck.Shuffle());
+        Dealer.Deck.Shuffle();
 
         do
         {

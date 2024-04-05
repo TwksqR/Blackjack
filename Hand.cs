@@ -9,7 +9,7 @@ public class Hand
     
     public int Value { get; set; }
 
-    public string DisplayValue { get; private set; } = "?";
+    public string DisplayValue { get; protected set; } = "?";
 
     public bool IsBusted { get; set; } = false;
 
@@ -57,7 +57,7 @@ public class Hand
         }
 
         // FIXME: Player hand value is hidden
-        DisplayValue = (Cards.All(card => card.IsFaceUp)) ? Value.ToString() : "HUH";
+        DisplayValue = (Cards.All(card => card.IsFaceUp)) ? Value.ToString() : "?";
     }
 
     public string DisplayCards()
