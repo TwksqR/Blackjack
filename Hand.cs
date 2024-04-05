@@ -57,7 +57,7 @@ public class Hand
         }
 
         // FIXME: Player hand value is hidden
-        DisplayValue = (Cards.All(card => card.IsFaceUp)) ? Value.ToString() : "?";
+        DisplayValue = (Cards.All(card => card.IsFaceUp)) ? Value.ToString() : "HUH";
     }
 
     public string DisplayCards()
