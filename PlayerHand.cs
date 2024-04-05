@@ -46,9 +46,6 @@ public sealed class PlayerHand : Hand
         }
         else if ((!IsSplit) && (Cards.Count == 2))
         {
-            // TODO: Add 3:2 payout
-            // NOTE: If dealer has natural, do not payout 3:2
-
             IsBlackjack = true;
         }
 
@@ -96,7 +93,6 @@ public sealed class PlayerHand : Hand
             IsResolved = true;
         }
 
-        // TODO: Figure out a way to not skip past player's turn upon splitting
         void Split(Player owner)
         {
             owner.Winnings -= Bet;

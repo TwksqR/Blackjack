@@ -56,7 +56,6 @@ public class Hand
             IsBlackjack = true;
         }
 
-        // FIXME: Player hand value is hidden
         DisplayValue = (Cards.All(card => card.IsFaceUp)) ? Value.ToString() : "?";
     }
 

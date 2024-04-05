@@ -1,7 +1,5 @@
 namespace Blackjack;
 
-// TODO: Relocate and extract this conglomerate
-
 public static class GameManager
 {
     public static List<Player> Players { get; private set; } = new();
@@ -57,7 +55,8 @@ public static class GameManager
                 }
                 else if (playerNameIsTaken)
                 {
-                    Console.WriteLine("This player name is already taken."); // FIXME: Won't show up because it's cleared
+                    // FIXME: #13: "This player name is already taken." will not show up due to Console.Clear() in do while loop
+                    Console.WriteLine("This player name is already taken.");
                 }
                 else
                 {
@@ -136,7 +135,6 @@ public static class GameManager
 
     public static void PlayRound(int roundNumber)
     {
-        // TODO: Fix deal order (although it's completely unecessary, It'd be cool if the cards were dealt one to each player at a time)
         Console.Clear();
 
         WriteColoredLine($"Round {roundNumber}", ConsoleColor.Magenta);
@@ -161,7 +159,6 @@ public static class GameManager
             int playerBet;
             bool playerBetIsValid;
 
-            // TODO: Figure out what to do if a player has less than $2
             do
             {
                 Console.Clear();
@@ -192,8 +189,7 @@ public static class GameManager
         {
             for (int i = 0; i < player.Hands.Count; i++)
             {
-                // Upon player splitting: "Unhandled exception. System.ArgumentOutOfRangeException: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'index')"
-                // FIXME: Figure out why it is out of range
+                // FIXME: #1: Index iterating over player hands is out of range after that player splits a hand
                 var hand = player.Hands[i];
 
                 do
@@ -451,13 +447,6 @@ public static class GameManager
                 case ConsoleKey.DownArrow: 
                     selectedOptionIndex++;
                     break;
-
-                // "Exiting" the menu
-                // The first character of the next WriteLine() after this won't print for some reason
-                // TODO: Do something with it?
-
-                // case ConsoleKey.Escape:
-                //     return -1;
             }
 
             selectedOptionIndex = Math.Clamp(selectedOptionIndex, 0, optionsArray.Count() - 1);
