@@ -9,8 +9,6 @@ public class Hand
     
     public int Value { get; set; }
 
-    public string DisplayValue { get; protected set; } = "?";
-
     public bool IsBusted { get; set; } = false;
 
     public bool IsBlackjack { get; protected set; } = false; // Important for comparing hand values, where a Blackjack beats any other hand 
@@ -55,8 +53,6 @@ public class Hand
         {
             IsBlackjack = true;
         }
-
-        DisplayValue = (Cards.All(card => card.IsFaceUp)) ? Value.ToString() : "?";
     }
 
     public string DisplayCards()

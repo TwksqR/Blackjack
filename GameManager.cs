@@ -205,7 +205,7 @@ public static class GameManager
 
                     List<TurnAction> turnActions = hand.GetTurnActions(player);
 
-                    TurnAction selectedTurnAction = DisplayTurnActionsMenu(turnActions, 9);
+                    TurnAction selectedTurnAction = DisplayTurnActionsMenu(turnActions, 10);
 
                     selectedTurnAction.Selection(player);
 
@@ -331,7 +331,7 @@ public static class GameManager
         ConsoleColor playerHandColor = (hand.IsBusted) ? bustedPlayerHandColor : regularPlayerHandColor;
 
         Console.WriteLine(Dealer.Hand.DisplayCards());
-        WriteColoredLine(Dealer.Hand.DisplayValue, ConsoleColor.Magenta);
+        // WriteColoredLine(Dealer.Hand.DisplayValue, ConsoleColor.Magenta);
 
         Console.WriteLine();
 

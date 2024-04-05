@@ -6,6 +6,8 @@ public sealed class PlayerHand : Hand
 {
     public int Bet { get; set; }
 
+    public string DisplayValue { get; private set; } = "?";
+
     public bool IsDoubledDown = false; // For rotating the card texture when made in Godot
 
     public bool IsSplit { get; private set; } = false;
@@ -25,11 +27,14 @@ public sealed class PlayerHand : Hand
     {
         Value = Cards.Sum(card => card.Value);
 
-        if (Value < 21)
-        {
-            return;
-        }
+        var aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
 
+        if ((aceWorthOne != null) && (Value <= 10))
+        {
+            aceWorthOne.SetValue(11);
+            Value += 10; // The value increases from 1 to 11, a difference of 10
+        }
+        
         if (Value > 21)
         {
             var aceWorthEleven = Cards.FirstOrDefault(card => card.Value == 11);
@@ -44,12 +49,15 @@ public sealed class PlayerHand : Hand
                 Value -= 10; // The value of an decreases changes from 11 to 1, a difference of 10   
             }
         }
-        else if ((!IsSplit) && (Cards.Count == 2))
+        else if ((Value == 21) && (Cards.Count == 2) && (!IsSplit))
         {
             IsBlackjack = true;
         }
 
-        DisplayValue = (Cards.All(card => card.IsFaceUp)) ? Value.ToString() : "?";
+        if (Cards[^1].IsFaceUp)
+        {
+            DisplayValue = Cards.Where(card => card.IsFaceUp).Sum(card => card.Value).ToString();
+        }
     }
 
     public List<TurnAction> GetTurnActions(Player owner)
@@ -118,9 +126,5 @@ public sealed class PlayerHand : Hand
             IsSurrendered = true;
             IsResolved = true;
         }
-        
-        // NOTE: Separate action; done at the start of a round
-        // Add Insurance mechanic
-        // static void Insurance(PlayerHand hand, Player owner) {}
     }
 }
