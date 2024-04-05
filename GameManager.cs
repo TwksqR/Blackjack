@@ -77,7 +77,8 @@ public static class GameManager
     public static void PlayGame()
     {
         // NOTE: Comment to play with unshuffled deck
-        // Dealer.ShuffleDeck();
+        //Dealer.Deck = new Queue<Card>(Dealer.Deck.Shuffle());
+        Dealer.Deck.Shuffle();
 
         do
         {
@@ -317,8 +318,6 @@ public static class GameManager
                 }
             }
         }
-
-        
     }
 
     public static void DisplayHands(PlayerHand hand, Player owner)

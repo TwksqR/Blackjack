@@ -17,6 +17,8 @@ public sealed class PlayerHand : Hand
     public PlayerHand(int bet)
     {
         Bet = bet;
+
+        Cards.CollectionChanged += UpdateValue;
     }
 
     protected override void UpdateValue(object? sender, NotifyCollectionChangedEventArgs e)
@@ -49,6 +51,8 @@ public sealed class PlayerHand : Hand
 
             IsBlackjack = true;
         }
+
+        DisplayValue = (Cards.All(card => card.IsFaceUp)) ? Value.ToString() : "?";
     }
 
     public List<TurnAction> GetTurnActions(Player owner)

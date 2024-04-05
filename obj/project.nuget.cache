@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aVbdJZDA56pF3LDK8b0GeJCFzHyn+etnxbdNYVPgqZwsq+Dbzkpu4T8TXYOpCsbPbzjQMM0o+zOAKPS0reytYA==",
+  "dgSpecHash": "GHbDnbICKPgyG764FEDjNvreb0PuyJzd5PhV3owZHq3RE1iopfuvYSpQS2r5NeSHP3Pokt1ZVCu4Sst73Gpf0Q==",
   "success": true,
-  "projectFilePath": "D:\\Coding\\CSharp\\Blackjack\\Blackjack.csproj",
+  "projectFilePath": "D:\\Coding\\C#\\Blackjack\\Blackjack.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

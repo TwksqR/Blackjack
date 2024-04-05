@@ -9,7 +9,7 @@ public class Hand
     
     public int Value { get; set; }
 
-    public string DisplayValue { get; private set; } = "?";
+    public string DisplayValue { get; protected set; } = "?";
 
     public bool IsBusted { get; set; } = false;
 

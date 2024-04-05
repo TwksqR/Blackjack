@@ -2,7 +2,7 @@ namespace Blackjack;
 
 public static class Dealer
 {
-    public static Queue<Card> Deck { get; private set; } = CreateDeck(6);
+    public static Queue<Card> Deck { get; set; } = CreateDeck(6);
 
     public static Hand Hand { get; } = new();
 
@@ -28,26 +28,26 @@ public static class Dealer
         return deck;
     }
 
-    public static void ShuffleDeck()
+    public static void Shuffle<T>(this IEnumerable<T> cards)
     {
-        var deckList = Deck.ToArray();
+        T[] cardsArray = cards.ToArray();
 
         // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-        for (int n = deckList.Length - 1; n > 0; n--)
+        for (int n = cardsArray.Length - 1; n > 0; n--)
         {
             int k = Rand.Next(0, n + 1);
 
-            (deckList[n], deckList[k]) = (deckList[k], deckList[n]);
+            (cardsArray[n], cardsArray[k]) = (cardsArray[k], cardsArray[n]);
         }
 
-        Deck = new(deckList);
+        cards = cardsArray;
     }
 
     // TODO: Replace with basic CreateDeck() and Shuffle()
     public static void ReshuffleDeck()
     {
         Deck = CreateDeck(8);
-        ShuffleDeck();
+        Deck.Shuffle();
         Console.WriteLine("Reshuffling deck. (A reshuffle occurs when there are 234 or less cards in the deck)");
         
         GameManager.DisplayPressEnter();

@@ -53,10 +53,10 @@ public class Card
             char displaySuit = Suit switch
             {
                 Suit.Spades   => '♠',
-                Suit.Diamonds => '♢',
+                Suit.Diamonds => '♦',
                 Suit.Clubs    => '♣',
-                Suit.Hearts   => '♡',
-                _  => '?' // If this is the result, then something has gone VERY wrong
+                Suit.Hearts   => '♥',
+                _  => '_' // If this is the result, then something has gone VERY wrong
             };
 
             return displayRank + displaySuit;
