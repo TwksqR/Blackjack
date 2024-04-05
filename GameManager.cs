@@ -105,7 +105,7 @@ public static class GameManager
             {
                 Console.Clear();
 
-                Console.WriteLine($"{Players[i].Name}, keep playing?");
+                Console.WriteLine($"{Players[i].Name}, play again?");
                 WriteColoredLine($"Winnings: {string.Format("{0:C}", Players[i].Winnings)}", ConsoleColor.Green);
 
                 var options = new string[]
