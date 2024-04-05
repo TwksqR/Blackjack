@@ -6,8 +6,6 @@ public static class Dealer
 
     public static Hand Hand { get; } = new();
 
-    public static List<Card> DiscardPile { get; } = new();
-
     private static readonly Random Rand = new(DateTime.Now.Millisecond);
 
     private static Queue<Card> CreateDeck(int decks)
