@@ -77,8 +77,7 @@ public static class GameManager
     {
         int roundNumber = 0;
 
-        //Dealer.Deck = new Queue<Card>(Dealer.Deck.Shuffle());
-        Dealer.Deck.Shuffle();
+        Dealer.ShuffleDeck();
 
         do
         {
@@ -204,7 +203,7 @@ public static class GameManager
 
                     List<TurnAction> turnActions = hand.GetTurnActions(player);
 
-                    TurnAction selectedTurnAction = DisplayTurnActionsMenu(turnActions, 10);
+                    TurnAction selectedTurnAction = DisplayTurnActionsMenu(turnActions, 9);
 
                     selectedTurnAction.Selection(player);
 

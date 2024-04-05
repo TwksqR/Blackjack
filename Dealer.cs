@@ -6,7 +6,7 @@ public static class Dealer
 
     public static Hand Hand { get; } = new();
 
-    private static readonly Random Rand = new(DateTime.Now.Millisecond);
+    private static readonly Random _rand = new(DateTime.Now.Millisecond);
 
     private static Queue<Card> CreateDeck(int decks)
     {
@@ -26,25 +26,25 @@ public static class Dealer
         return deck;
     }
 
-    public static void Shuffle<T>(this IEnumerable<T> cards)
+    public static void ShuffleDeck()
     {
-        T[] cardsArray = cards.ToArray();
+        var deckArray = Deck.ToArray();
 
         // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-        for (int n = cardsArray.Length - 1; n > 0; n--)
+        for (int n = deckArray.Length - 1; n > 0; n--)
         {
-            int k = Rand.Next(0, n + 1);
+            int k = _rand.Next(0, n + 1);
 
-            (cardsArray[n], cardsArray[k]) = (cardsArray[k], cardsArray[n]);
+            (deckArray[n], deckArray[k]) = (deckArray[k], deckArray[n]);
         }
 
-        cards = cardsArray;
+        Deck = new Queue<Card>(deckArray);
     }
 
     public static void ReshuffleDeck()
     {
         Deck = CreateDeck(8);
-        Deck.Shuffle();
+        ShuffleDeck();
         Console.WriteLine("\nReshuffling deck. (A reshuffle occurs when there are 234 or less cards in the deck)");
     }
 
