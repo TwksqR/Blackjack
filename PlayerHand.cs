@@ -46,7 +46,7 @@ public sealed class PlayerHand : Hand
             else
             {
                 aceWorthEleven.SetValue(1);
-                Value -= 10; // The value of an decreases changes from 11 to 1, a difference of 10   
+                Value -= 10; // The value decreases from 11 to 1, a difference of 10   
             }
         }
         else if ((Value == 21) && (Cards.Count == 2) && (!IsSplit))
