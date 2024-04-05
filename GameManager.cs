@@ -337,11 +337,12 @@ public static class GameManager
 
         Console.WriteLine(hand.DisplayCards());
         WriteColoredLine(hand.DisplayValue, playerHandColor);
+        WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
 
         Console.WriteLine();
 
         WriteColoredLine(owner.Name, ConsoleColor.DarkGray);
-        WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
+        WriteColoredLine(string.Format("{0:C}", owner.Winnings), ConsoleColor.DarkGray);
     }
 
     public static bool TryReadInt(string text, out int output)
