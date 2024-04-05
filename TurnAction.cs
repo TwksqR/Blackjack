@@ -2,7 +2,7 @@ namespace Blackjack;
 
 public sealed class TurnAction
 {
-    public delegate void OptionEventHandler(Player owner);
+    public Action<Player> Selection;
 
     private string _name = "Turn Action";
     public string Name
@@ -15,9 +15,7 @@ public sealed class TurnAction
         }
     }
 
-    public OptionEventHandler Selection { get; set; }
-
-    public TurnAction(string name, OptionEventHandler selection)
+    public TurnAction(string name, Action<Player> selection)
     {
         Name = name;
         Selection = selection;
