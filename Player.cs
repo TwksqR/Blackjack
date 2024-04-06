@@ -4,7 +4,7 @@ public sealed class Player
 {
     public string Name { get; }
 
-    public decimal Winnings { get; set; } = 50m;
+    public decimal Bankroll { get; set; } = 50m;
 
     public List<PlayerHand> Hands { get; } = new();
 

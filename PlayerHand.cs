@@ -70,7 +70,7 @@ public sealed class PlayerHand : Hand
 
         if (Cards.Count == 2)
         {
-            if (owner.Winnings >= Bet)
+            if (owner.Bankroll >= Bet)
             {
                 turnActions.Add(new TurnAction("Double Down", DoubleDown));
 
@@ -92,7 +92,7 @@ public sealed class PlayerHand : Hand
 
         void DoubleDown(Player owner)
         {
-            owner.Winnings -= Bet;
+            owner.Bankroll -= Bet;
             Bet *= 2;
 
             this.DealCard(Dealer.Deck, true);
@@ -103,7 +103,7 @@ public sealed class PlayerHand : Hand
 
         void Split(Player owner)
         {
-            owner.Winnings -= Bet;
+            owner.Bankroll -= Bet;
 
             var newHand = new PlayerHand(Bet);
             newHand.Cards.Add(Cards[1]);
@@ -121,7 +121,7 @@ public sealed class PlayerHand : Hand
 
         void Surrender(Player owner)
         {
-            owner.Winnings += Bet / 2m;
+            owner.Bankroll += Bet / 2m;
 
             IsSurrendered = true;
             IsResolved = true;

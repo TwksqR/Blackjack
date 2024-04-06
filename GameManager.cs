@@ -87,7 +87,7 @@ public static class GameManager
 
             for (int i = 0; i < Players.Count; i++)
             {
-                if (Players[i].Winnings == 0)
+                if (Players[i].Bankroll == 0)
                 {
                     WriteColoredLine($"{Players[i].Name} has bust out!", ConsoleColor.Red);
 
@@ -104,7 +104,7 @@ public static class GameManager
                 Console.Clear();
 
                 Console.WriteLine($"{Players[i].Name}, play again?");
-                WriteColoredLine($"Winnings: {string.Format("{0:C}", Players[i].Winnings)}", ConsoleColor.Green);
+                WriteColoredLine($"Bankroll: {string.Format("{0:C}", Players[i].Bankroll)}", ConsoleColor.Green);
 
                 var options = new string[]
                 {
@@ -118,7 +118,7 @@ public static class GameManager
                 {
                     Console.Clear();
 
-                    WriteColoredLine($"{Players[i].Name} has walked out with {string.Format("{0:C}", Players[i].Winnings)}!", ConsoleColor.Green);
+                    WriteColoredLine($"{Players[i].Name} has walked out with {string.Format("{0:C}", Players[i].Bankroll)}!", ConsoleColor.Green);
 
                     Players.RemoveAt(i);
 
@@ -165,9 +165,9 @@ public static class GameManager
                 Console.Clear();
 
                 Console.WriteLine($"{player.Name}, enter your bet. (min: {string.Format("{0:C}", minimumBet)}, max: {string.Format("{0:C}", maximumBet)}, must be a whole number)");
-                TryReadInt($"Winnings: {string.Format("{0:C}", player.Winnings)}", ConsoleColor.Green, out playerBet);
+                TryReadInt($"Bankroll: {string.Format("{0:C}", player.Bankroll)}", ConsoleColor.Green, out playerBet);
 
-                playerBetIsValid = (playerBet <= player.Winnings) && (playerBet >= minimumBet) && (playerBet <= maximumBet);
+                playerBetIsValid = (playerBet <= player.Bankroll) && (playerBet >= minimumBet) && (playerBet <= maximumBet);
             }
             while (!playerBetIsValid);
             
@@ -178,7 +178,7 @@ public static class GameManager
             hand.DealCard(Dealer.Deck, true);
 
             player.Hands.Add(hand);
-            player.Winnings -= playerBet;
+            player.Bankroll -= playerBet;
         }
 
         Console.CursorVisible = false;
@@ -217,7 +217,7 @@ public static class GameManager
                     if (hand.IsBusted)
                     {
                         WriteColoredLine("\nBust!", ConsoleColor.Red);
-                        WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (-{string.Format("{0:C}", hand.Bet)})", ConsoleColor.Red);
+                        WriteColoredLine($"{string.Format("{0:C}", player.Bankroll)} (-{string.Format("{0:C}", hand.Bet)})", ConsoleColor.Red);
 
                         hand.Bet = 0;
 
@@ -226,7 +226,7 @@ public static class GameManager
                     else if (hand.IsSurrendered)
                     {
                         WriteColoredLine("\nSurrender!", ConsoleColor.Red);
-                        WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (-{string.Format("{0:C}", hand.Bet / 2m)})", ConsoleColor.Red);
+                        WriteColoredLine($"{string.Format("{0:C}", player.Bankroll)} (-{string.Format("{0:C}", hand.Bet / 2m)})", ConsoleColor.Red);
                     
                         hand.Bet = 0;
 
@@ -278,8 +278,6 @@ public static class GameManager
 
                     string playerHandResult = "Push";
 
-                    string playerWinningsOffset = "";
-
                     if ((hand.Value > Dealer.Hand.Value) || (Dealer.Hand.IsBusted))
                     {
                         dealerHandResultColor = losingHandColor;
@@ -287,11 +285,9 @@ public static class GameManager
 
                         playerHandResult = "Win";
 
-                        playerWinningsOffset = "+";
-
                         hand.Bet *= 2;
 
-                        player.Winnings += hand.Bet;
+                        player.Bankroll += hand.Bet;
                     }
                     else if (hand.Value < Dealer.Hand.Value)
                     {
@@ -300,11 +296,11 @@ public static class GameManager
 
                         playerHandResult = "Lose";
 
-                        playerWinningsOffset = "-";
+                        hand.Bet = 0;
                     }
                     else
                     {
-                        player.Winnings += hand.Bet;
+                        player.Bankroll += hand.Bet;
                     }
 
                     Console.WriteLine(Dealer.Hand.DisplayCards());
@@ -316,7 +312,7 @@ public static class GameManager
                     WriteColoredLine(player.Name, ConsoleColor.DarkGray);
                     Console.WriteLine();
                     WriteColoredLine(playerHandResult, playerHandResultColor);
-                    WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} ({playerWinningsOffset}{string.Format("{0:C}", hand.Bet)})", playerHandResultColor);
+                    WriteColoredLine($"{string.Format("{0:C}", player.Bankroll)} (+{string.Format("{0:C}", hand.Bet)})", playerHandResultColor);
 
                     DisplayPressEnter();
                 }
@@ -343,7 +339,7 @@ public static class GameManager
         Console.WriteLine();
 
         WriteColoredLine(owner.Name, ConsoleColor.DarkGray);
-        WriteColoredLine(string.Format("{0:C}", owner.Winnings), ConsoleColor.DarkGray);
+        WriteColoredLine(string.Format("{0:C}", owner.Bankroll), ConsoleColor.DarkGray);
     }
 
     public static bool TryReadInt(string text, out int output)
