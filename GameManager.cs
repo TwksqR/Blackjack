@@ -93,10 +93,10 @@ public static class GameManager
                     Players.RemoveAt(i);
 
                     i--;
+
+                    Thread.Sleep(2000);
                 }
             }
-
-            Thread.Sleep(2000);
 
             for (int i = 0; i < Players.Count; i++)
             {
@@ -247,18 +247,9 @@ public static class GameManager
 
         Console.Clear();
 
-        if (!Players.All(player => player.Hands.All(hand => hand.IsBusted || hand.IsSurrendered)))
+        if (Players.Any(player => player.Hands.Any(hand => !hand.IsBusted && !hand.IsSurrendered)))
         {
-            Dealer.Hand.Cards[0].RevealCard(true);
-
-            Console.WriteLine("Resolving dealer's hand...\n");
-
-            Console.WriteLine(Dealer.Hand.DisplayCards());
-            WriteColoredLine(Dealer.Hand.Value, ConsoleColor.Magenta);
-
-            Thread.Sleep(2000);
-
-            Dealer.DealHand();
+            Dealer.ResolveHand();
 
             foreach (Player player in Players)
             {

@@ -57,8 +57,17 @@ public static class Dealer
         hand.Cards.Add(dealtCard);
     }
 
-    public static void DealHand()
+    public static void ResolveHand()
     {
+        Hand.Cards[0].RevealCard(true);
+
+        Console.WriteLine("Resolving dealer's hand...\n");
+
+        Console.WriteLine(Hand.DisplayCards());
+        GameManager.WriteColoredLine(Hand.Value, ConsoleColor.Magenta);
+
+        Thread.Sleep(2000);
+
         ConsoleColor regularDealerHandColor = ConsoleColor.Magenta;
         ConsoleColor bustedDealerHandColor = ConsoleColor.Red;
 
@@ -70,7 +79,7 @@ public static class Dealer
 
             ConsoleColor dealerHandColor = (Hand.IsBusted) ? bustedDealerHandColor : regularDealerHandColor;
 
-            Console.WriteLine("Resolving dealer's hand...\n");
+            GameManager.WriteColoredLine("Resolving dealer's hand...\n", ConsoleColor.Blue);
             Console.WriteLine(Hand.DisplayCards());
             GameManager.WriteColoredLine(Hand.Value, dealerHandColor);
 
