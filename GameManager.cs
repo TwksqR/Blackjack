@@ -9,20 +9,19 @@ public static class GameManager
         Console.Clear();
         Console.CursorVisible = false;
 
-        Console.WriteLine("Welcome to Console Blackjack!\n\nMade by TwksqR (Discord: twskqr, Reddit: u/GD_Stalker)");
+        WriteColoredLine("Blackjack Simulator", ConsoleColor.Magenta);
+        WriteColoredLine("\nMade by TwksqR\nDiscord: twskqr\nReddit: u/GD_Stalker)", ConsoleColor.DarkGray);
 
-        DisplayButton("Let's play!", 3);
+        DisplayButton("Let's play!", 5);
 
         int playerCount;
         bool playerCountIsValid;
-
-        Console.CursorVisible = true;
 
         do
         {
             Console.Clear();
 
-            TryReadInt("Enter player count:", out playerCount);
+            TryReadInt("Enter player count:", ConsoleColor.Cyan, out playerCount);
 
             playerCountIsValid = (0 < playerCount) && (playerCount <= 7);
         }
@@ -41,7 +40,7 @@ public static class GameManager
             {
                 Console.Clear();
 
-                Console.WriteLine("Enter Player {0}'s name:", playerNumber);
+                WriteColoredLine($"Enter Player {playerNumber}'s name:", ConsoleColor.Cyan);
 
                 playerName = Console.ReadLine() ?? "";
 
@@ -103,7 +102,7 @@ public static class GameManager
             {
                 Console.Clear();
 
-                Console.WriteLine($"{Players[i].Name}, play again?");
+                WriteColoredLine($"{Players[i].Name}, play again?", ConsoleColor.Cyan);
                 WriteColoredLine($"Bankroll: {string.Format("{0:C}", Players[i].Bankroll)}", ConsoleColor.Green);
 
                 var options = new string[]
@@ -164,13 +163,14 @@ public static class GameManager
             {
                 Console.Clear();
 
-                Console.WriteLine($"{player.Name}, enter your bet. (min: {string.Format("{0:C}", minimumBet)}, max: {string.Format("{0:C}", maximumBet)}, must be a whole number)");
+                WriteColoredLine($"{player.Name}, enter your bet. (min: {string.Format("{0:C}", minimumBet)}, max: {string.Format("{0:C}", maximumBet)}, must be a whole number)", ConsoleColor.Cyan);
                 TryReadInt($"Bankroll: {string.Format("{0:C}", player.Bankroll)}", ConsoleColor.Green, out playerBet);
 
                 playerBetIsValid = (playerBet <= player.Bankroll) && (playerBet >= minimumBet) && (playerBet <= maximumBet);
             }
             while (!playerBetIsValid);
             
+            Console.CursorVisible = false;
              
             var hand = new PlayerHand(playerBet);
 
@@ -344,6 +344,8 @@ public static class GameManager
 
     public static bool TryReadInt(string text, out int output)
     {
+        Console.CursorVisible = true;
+
         Console.WriteLine(text);
 
         string input = Console.ReadLine() ?? "";
@@ -354,6 +356,8 @@ public static class GameManager
 
     public static bool TryReadInt(string text, ConsoleColor textColor, out int output)
     {
+        Console.CursorVisible = true;
+
         WriteColoredLine(text, textColor);
 
         string input = Console.ReadLine() ?? "";
@@ -460,7 +464,7 @@ public static class GameManager
 
         for (int i = 0; i < options.Count(); i++)
         {
-            var optionColor = (i == selectedOptionIndex) ? ConsoleColor.Yellow : ConsoleColor.Cyan;
+            var optionColor = (i == selectedOptionIndex) ? ConsoleColor.Yellow : ConsoleColor.DarkBlue;
 
             WriteColoredLine(options.ElementAt(i), optionColor);
         }
