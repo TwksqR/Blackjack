@@ -70,6 +70,7 @@ public static class Dealer
 
             ConsoleColor dealerHandColor = (Hand.IsBusted) ? bustedDealerHandColor : regularDealerHandColor;
 
+            Console.WriteLine("Resolving dealer's hand...\n");
             Console.WriteLine(Hand.DisplayCards());
             GameManager.WriteColoredLine(Hand.Value, dealerHandColor);
 

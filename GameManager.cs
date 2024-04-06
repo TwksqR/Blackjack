@@ -251,6 +251,8 @@ public static class GameManager
         {
             Dealer.Hand.Cards[0].RevealCard(true);
 
+            Console.WriteLine("Resolving dealer's hand...\n");
+
             Console.WriteLine(Dealer.Hand.DisplayCards());
             WriteColoredLine(Dealer.Hand.Value, ConsoleColor.Magenta);
 
@@ -275,7 +277,7 @@ public static class GameManager
 
                     ConsoleColor dealerHandResultColor = tiedHandColor;
                     ConsoleColor playerHandResultColor = tiedHandColor;
-
+                    
                     string playerHandResult = "Push";
 
                     if ((hand.Value > Dealer.Hand.Value) || (Dealer.Hand.IsBusted))
