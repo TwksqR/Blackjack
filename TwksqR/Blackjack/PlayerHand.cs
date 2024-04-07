@@ -1,4 +1,4 @@
-namespace Blackjack;
+namespace Twksqr.Blackjack;
 
 using System.Collections.Specialized;
 
@@ -60,9 +60,9 @@ public sealed class PlayerHand : Hand
         }
     }
 
-    public List<TurnAction> GetTurnActions(Player owner)
+    public List<Option> GetTurnOptions(Player owner)
     {
-        var turnActions = new List<TurnAction>()
+        var turnOptions = new List<Option>()
         {
             new("Hit", Hit),
             new("Stand", Stand)
@@ -72,18 +72,18 @@ public sealed class PlayerHand : Hand
         {
             if (owner.Winnings >= Bet)
             {
-                turnActions.Add(new TurnAction("Double Down", DoubleDown));
+                turnOptions.Add(new Option("Double Down", DoubleDown));
 
                 if (((Cards[0].Rank == Cards[1].Rank) || (Cards[0].Value == Cards[1].Value)) && (owner.Hands.Count < 4))
                 {
-                    turnActions.Add(new TurnAction("Split", Split));
+                    turnOptions.Add(new Option("Split", Split));
                 }
             }
 
-            turnActions.Add(new TurnAction("Surrender", Surrender));
+            turnOptions.Add(new Option("Surrender", Surrender));
         }
 
-        return turnActions;
+        return turnOptions;
 
         void Hit(Player owner)
         {

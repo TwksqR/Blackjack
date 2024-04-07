@@ -1,4 +1,6 @@
-namespace Blackjack;
+namespace Twksqr.Blackjack;
+
+using TwksqR;
 
 public static class Dealer
 {
@@ -61,10 +63,10 @@ public static class Dealer
     {
         Hand.Cards[0].RevealCard(true);
 
-        GameManager.WriteColoredLine("Resolving dealer's hand...\n", ConsoleColor.Cyan);
+        ConsoleUI.WriteColoredLine("Resolving dealer's hand...\n", ConsoleColor.Cyan);
 
         Console.WriteLine(Hand.DisplayCards());
-        GameManager.WriteColoredLine(Hand.Value, ConsoleColor.Magenta);
+        ConsoleUI.WriteColoredLine(Hand.Value, ConsoleColor.Magenta);
 
         Thread.Sleep(2000);
 
@@ -79,13 +81,13 @@ public static class Dealer
 
             ConsoleColor dealerHandColor = (Hand.IsBusted) ? bustedDealerHandColor : regularDealerHandColor;
 
-            GameManager.WriteColoredLine("Resolving dealer's hand...\n", ConsoleColor.Cyan);
+            ConsoleUI.WriteColoredLine("Resolving dealer's hand...\n", ConsoleColor.Cyan);
             Console.WriteLine(Hand.DisplayCards());
-            GameManager.WriteColoredLine(Hand.Value, dealerHandColor);
+            ConsoleUI.WriteColoredLine(Hand.Value, dealerHandColor);
 
             if (Hand.IsBusted)
             {
-                GameManager.WriteColoredLine("\nBust!", ConsoleColor.Red);
+                ConsoleUI.WriteColoredLine("\nBust!", ConsoleColor.Red);
             }
 
             Thread.Sleep(2000);

@@ -1,7 +1,8 @@
-namespace Blackjack;
+namespace Twksqr.Blackjack;
 
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using Twksqr;
 
 public class Hand
 {

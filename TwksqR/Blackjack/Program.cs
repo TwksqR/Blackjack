@@ -1,4 +1,4 @@
-﻿namespace Blackjack;
+﻿namespace Twksqr.Blackjack;
 
 public static class Program
 {
