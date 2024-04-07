@@ -171,14 +171,22 @@ public static class GameManager
             while (!playerBetIsValid);
             
             Console.CursorVisible = false;
-             
+
+            Console.Clear();
+
+            player.Winnings -= playerBet;
+
+            Console.WriteLine($"{player.Name} has bet {string.Format("{0:C}", playerBet)}.");
+            WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (-{string.Format("{0:C}", playerBet)})", ConsoleColor.Red);
+
             var hand = new PlayerHand(playerBet);
 
             hand.DealCard(Dealer.Deck, true);
             hand.DealCard(Dealer.Deck, true);
 
             player.Hands.Add(hand);
-            player.Winnings -= playerBet;
+
+            Thread.Sleep(2000);
         }
 
         Console.CursorVisible = false;
@@ -217,7 +225,7 @@ public static class GameManager
                     if (hand.IsBusted)
                     {
                         WriteColoredLine("\nBust!", ConsoleColor.Red);
-                        WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (-{string.Format("{0:C}", hand.Bet)})", ConsoleColor.Red);
+                        WriteColoredLine(string.Format("{0:C}", player.Winnings), ConsoleColor.Red);
 
                         hand.Bet = 0;
 
@@ -226,7 +234,7 @@ public static class GameManager
                     else if (hand.IsSurrendered)
                     {
                         WriteColoredLine("\nSurrender!", ConsoleColor.Red);
-                        WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (-{string.Format("{0:C}", hand.Bet / 2m)})", ConsoleColor.Red);
+                        WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (+{string.Format("{0:C}", hand.Bet / 2m)})", ConsoleColor.Red);
                     
                         hand.Bet = 0;
 
@@ -301,6 +309,7 @@ public static class GameManager
                     Console.WriteLine();
                     Console.WriteLine(hand.DisplayCards());
                     WriteColoredLine(hand.Value, playerHandResultColor);
+                    WriteColoredLine(hand.Bet, ConsoleColor.Gray);
                     Console.WriteLine();
                     WriteColoredLine(player.Name, ConsoleColor.DarkGray);
                     Console.WriteLine();
