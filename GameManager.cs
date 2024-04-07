@@ -10,7 +10,7 @@ public static class GameManager
         Console.CursorVisible = false;
 
         WriteColoredLine("Blackjack Simulator", ConsoleColor.Magenta);
-        WriteColoredLine("\nMade by TwksqR\nDiscord: twskqr\nReddit: u/GD_Stalker)", ConsoleColor.DarkGray);
+        WriteColoredLine("\nMade by TwksqR\nDiscord: twskqr\nReddit: u/GD_Stalker", ConsoleColor.DarkGray);
 
         DisplayButton("Let's play!", 5);
 
