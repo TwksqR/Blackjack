@@ -47,7 +47,7 @@ public static class ConsoleUI
                 WriteColoredLine(options.ElementAt(i), optionColor);
             }
 
-            keyInfo = Console.ReadKey();
+            keyInfo = Console.ReadKey(false);
 
             switch (keyInfo.Key)
             {
