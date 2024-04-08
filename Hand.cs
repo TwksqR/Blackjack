@@ -2,13 +2,24 @@ namespace Twksqr.Blackjack;
 
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using Twksqr;
 
 public class Hand
 {
     public ObservableCollection<Card> Cards { get; } = new();
     
-    public int Value { get; set; }
+    private int _value;
+    public int Value
+    {
+        get
+        {
+            return _value - Cards.Where(card => !card.IsFaceUp).Sum(card => card.Value);
+        }
+
+        set
+        {
+            _value = value;
+        }
+    }
 
     public bool IsBusted { get; set; } = false;
 
@@ -19,13 +30,19 @@ public class Hand
         Cards.CollectionChanged += UpdateValue;
     }
 
+    // This is ugly but if it works, it works
     protected virtual void UpdateValue(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        UpdateValue();
+    }
+
+    public void UpdateValue()
     {
         Value = Cards.Sum(card => card.Value);
 
         var aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
 
-        if ((aceWorthOne != null) && (Value <= 10))
+        if ((aceWorthOne != null) && (Value <= 11))
         {
             aceWorthOne.SetValue(11);
             Value += 10; // The value increases from 1 to 11, a difference of 10

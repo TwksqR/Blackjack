@@ -61,7 +61,16 @@ public static class Dealer
 
     public static void ResolveHand()
     {
+        ConsoleUI.WriteColoredLine("Revealing dealer's hand...\n", ConsoleColor.Cyan);
+
+        Console.WriteLine(Hand.DisplayCards());
+        ConsoleUI.WriteColoredLine(Hand.Value, ConsoleColor.Magenta);
+
+        Thread.Sleep(2000);
+
         Hand.Cards[0].RevealCard(true);
+
+        Console.Clear();
 
         ConsoleUI.WriteColoredLine("Resolving dealer's hand...\n", ConsoleColor.Cyan);
 
@@ -87,7 +96,7 @@ public static class Dealer
 
             if (Hand.IsBusted)
             {
-                ConsoleUI.WriteColoredLine("\nBust!", ConsoleColor.Red);
+                ConsoleUI.WriteColoredLine("\nBust", ConsoleColor.Red);
             }
 
             Thread.Sleep(2000);

@@ -5,12 +5,22 @@ public static class ConsoleUI
     private static readonly ConsoleColor _unselectedOptionColor = ConsoleColor.Blue;
     private static readonly ConsoleColor _selectedOptionColor = ConsoleColor.Yellow;
 
-    public static void WriteColoredLine(object? line, ConsoleColor color)
+    public static void WriteColored(object? text, ConsoleColor color)
     {
         var currentForegroundColor = Console.ForegroundColor;
         Console.ForegroundColor = color;
 
-        Console.WriteLine(line);
+        Console.Write(text);
+
+        Console.ForegroundColor = currentForegroundColor;
+    }
+
+    public static void WriteColoredLine(object? text, ConsoleColor color)
+    {
+        var currentForegroundColor = Console.ForegroundColor;
+        Console.ForegroundColor = color;
+
+        Console.WriteLine(text);
 
         Console.ForegroundColor = currentForegroundColor;
     }
