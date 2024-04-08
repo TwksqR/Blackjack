@@ -1,6 +1,6 @@
 namespace Twksqr.Blackjack;
 
-public sealed class Option
+public class Option
 {
     public Action<Player> Action;
 

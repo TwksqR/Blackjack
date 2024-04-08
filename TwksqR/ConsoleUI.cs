@@ -5,29 +5,24 @@ public static class ConsoleUI
     private static readonly ConsoleColor _unselectedOptionColor = ConsoleColor.Blue;
     private static readonly ConsoleColor _selectedOptionColor = ConsoleColor.Yellow;
 
-    public static void WriteColoredLine(object? line, ConsoleColor color)
+    public static void WriteColored(object? text, ConsoleColor color)
     {
         var currentForegroundColor = Console.ForegroundColor;
         Console.ForegroundColor = color;
 
-        Console.WriteLine(line);
+        Console.Write(text);
 
         Console.ForegroundColor = currentForegroundColor;
     }
 
-    public static void WriteOptions<T>(IEnumerable<T> options, int selectedOptionIndex)
+    public static void WriteColoredLine(object? text, ConsoleColor color)
     {
-        for (int i = 0; i < options.Count(); i++)
-        {
-            if (options.ElementAt(selectedOptionIndex) == null || options.ElementAt(selectedOptionIndex)?.ToString() == "")
-            {
-                continue;
-            }
+        var currentForegroundColor = Console.ForegroundColor;
+        Console.ForegroundColor = color;
 
-            var optionColor = (i == selectedOptionIndex) ? _selectedOptionColor : _unselectedOptionColor;
+        Console.WriteLine(text);
 
-            WriteColoredLine(options.ElementAt(i), optionColor);
-        }
+        Console.ForegroundColor = currentForegroundColor;
     }
 
     public static int DisplayMenu<T>(IEnumerable<T> options, int left, int top)
@@ -40,7 +35,17 @@ public static class ConsoleUI
         {
             Console.SetCursorPosition(left, top);
 
-            WriteOptions(options, selectedOptionIndex);
+            for (int i = 0; i < options.Count(); i++)
+            {
+                if (options.ElementAt(selectedOptionIndex) == null || options.ElementAt(selectedOptionIndex)?.ToString() == "")
+                {
+                    continue;
+                }
+
+                var optionColor = (i == selectedOptionIndex) ? _selectedOptionColor : _unselectedOptionColor;
+
+                WriteColoredLine(options.ElementAt(i), optionColor);
+            }
 
             keyInfo = Console.ReadKey();
 

@@ -21,23 +21,17 @@ public class Card
         }
     }
 
-    public bool IsFaceUp { get; private set; } = false;
+    public bool IsFaceUp { get; set; } = false;
 
     public Card(int rank, Suit suit)
     {
         Rank = rank;
         Suit = suit;
 
-        Value = GetBlackjackValue();
+        // All face cards (Jacks, Queens, Kings) are worth 10
+        Value = Math.Clamp(Rank, 1, 10);
 
         ShortName = GetShortName();
-
-        int GetBlackjackValue()
-        {
-            // All face cards (Jacks, Queens, Kings) are worth 10
-            // Aces have an initial value of 11 in Blackjack; for deck creation convenience, their value was set to 1
-            return (Rank == 1) ? 11 : Math.Clamp(Rank, 2, 10);
-        }
 
         string GetShortName()
         {
@@ -66,11 +60,6 @@ public class Card
     public void SetValue(int newVal)
     {
         Value = Math.Clamp(newVal, 1 , 11);
-    }
-
-    public void RevealCard(bool toBeFaceUp)
-    {
-        IsFaceUp = toBeFaceUp;
     }
 
     public static bool Equals(Card card1, Card card2)
