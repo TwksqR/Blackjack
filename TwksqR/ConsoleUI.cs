@@ -25,8 +25,13 @@ public static class ConsoleUI
         Console.ForegroundColor = currentForegroundColor;
     }
 
-    public static int DisplayMenu<T>(IEnumerable<T> options, int left, int top)
+    public static int DisplayMenu<T>(IEnumerable<T> options)
     {
+        Console.CursorVisible = false;
+
+        int left = Console.CursorLeft;
+        int top = Console.CursorTop;
+
         int selectedOptionIndex = 0;
 
         ConsoleKeyInfo keyInfo;
@@ -64,64 +69,88 @@ public static class ConsoleUI
         }
         while (keyInfo.Key != ConsoleKey.Enter);
 
+        Console.CursorVisible = true;
+
         return selectedOptionIndex;
     }
 
-    public static bool TryReadInt(string text, out int output)
+    public static int DisplayMenu<T>(IEnumerable<T> options, int left, int top)
     {
-        Console.CursorVisible = true;
+        Console.CursorVisible = false;
 
-        Console.WriteLine(text);
+        int selectedOptionIndex = 0;
 
-        string input = Console.ReadLine() ?? "";
-        bool isVerified = int.TryParse(input, out output);
+        ConsoleKeyInfo keyInfo;
 
-        return isVerified;
-    }
-
-    public static bool TryReadInt(string text, ConsoleColor textColor, out int output)
-    {
-        Console.CursorVisible = true;
-
-        WriteColoredLine(text, textColor);
-
-        string input = Console.ReadLine() ?? "";
-        bool isVerified = int.TryParse(input, out output);
-
-        return isVerified;
-    }
-
-    public static bool TryRead<T>(out object? output)
-    {
-        T? type = default;
-        bool isVerified;
-
-        string input = Console.ReadLine() ?? "";
-
-        switch (type)
+        do
         {
-            case string:
-                isVerified = true;
-                output = input;
-                break;
+            Console.SetCursorPosition(left, top);
 
-            case int:
-                isVerified = int.TryParse(input, out int outputInt);
-                output = outputInt;
-                break;
+            for (int i = 0; i < options.Count(); i++)
+            {
+                if (options.ElementAt(selectedOptionIndex) == null || options.ElementAt(selectedOptionIndex)?.ToString() == "")
+                {
+                    continue;
+                }
 
-            case decimal:
-                isVerified = decimal.TryParse(input, out decimal outputDecimal);
-                output = outputDecimal;
-                break;
+                var optionColor = (i == selectedOptionIndex) ? _selectedOptionColor : _unselectedOptionColor;
 
-            default:
-                isVerified = false;
-                output = null;
-                break;
+                WriteColoredLine(options.ElementAt(i), optionColor);
+            }
+
+            keyInfo = Console.ReadKey(false);
+
+            switch (keyInfo.Key)
+            {
+                case ConsoleKey.UpArrow: 
+                    selectedOptionIndex--;
+                    break;
+
+                case ConsoleKey.DownArrow: 
+                    selectedOptionIndex++;
+                    break;
+            }
+
+            selectedOptionIndex = Math.Clamp(selectedOptionIndex, 0, options.Count() - 1);
         }
+        while (keyInfo.Key != ConsoleKey.Enter);
+
+        Console.CursorVisible = true;
+
+        return selectedOptionIndex;
+    }
+
+    public static bool TryRead(out int output)
+    {
+        Console.CursorVisible = true;
+
+        string input = Console.ReadLine() ?? "";
+
+        bool isVerified = int.TryParse(input, out output);
 
         return isVerified;
+    }
+
+    public static bool TryRead(out decimal output)
+    {
+        Console.CursorVisible = true;
+
+        string input = Console.ReadLine() ?? "";
+
+        bool isVerified = decimal.TryParse(input, out output);
+
+        return isVerified;
+    }
+
+    public static bool TryRead(out string output)
+    {
+        Console.CursorVisible = true;
+
+        string input = Console.ReadLine() ?? "";
+
+        output = input;
+
+        return true;
     }
 
     public static void DisplayPressEnter()
@@ -131,15 +160,19 @@ public static class ConsoleUI
 
     public static void DisplayButton(string button)
     {
-        WriteColoredLine("\n" + button, ConsoleColor.Yellow);
+        Console.CursorVisible = false;
+
+        WriteColoredLine($"\n{button}", _selectedOptionColor);
+        
         while (Console.ReadKey().Key != ConsoleKey.Enter) {}
+
+        Console.CursorVisible = true;
     }
 
-    public static void DisplayButton(string button, int offset)
+    public static void DisplayButton(string button, int left, int top)
     {
-        Console.SetCursorPosition(0, offset);
+        Console.SetCursorPosition(left, top);
 
-        WriteColoredLine("\n" + button, ConsoleColor.Yellow);
-        while (Console.ReadKey().Key != ConsoleKey.Enter) {}
+        DisplayButton(button);
     }
 }

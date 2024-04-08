@@ -72,7 +72,7 @@ public class Hand
         return string.Join(' ', Cards.Select(card => card.ShortName));
     }
 
-    public void Clear()
+    public void Reset()
     {
         Cards.Clear();
         IsBusted = false;

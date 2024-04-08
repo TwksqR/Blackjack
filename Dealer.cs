@@ -24,21 +24,21 @@ public static class Dealer
         }
     }
 
-    public static void ShuffleDeck()
+    public static void ShuffleDeck(this IList<Card> deck)
     {
         // https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-        for (int n = Deck.Count - 1; n > 0; n--)
+        for (int n = deck.Count - 1; n > 0; n--)
         {
             int k = _rand.Next(0, n + 1);
 
-            (Deck[n], Deck[k]) = (Deck[k], Deck[n]);
+            (deck[n], deck[k]) = (deck[k], deck[n]);
         }
     }
 
     public static void ReshuffleDeck()
     {
         Deck = CreateDeck(8).ToList();
-        ShuffleDeck();
+        ShuffleDeck(Deck);
         Console.WriteLine("\nReshuffling deck. (A reshuffle occurs when there are 234 or less cards in the deck)");
     }
 
@@ -54,9 +54,9 @@ public static class Dealer
 
     public static void ResolveHand()
     {
-        ConsoleUI.WriteColoredLine("Revealing dealer's hand...\n", ConsoleColor.Cyan);
+        ConsoleUI.WriteColoredLine("Revealing dealer's hand...", ConsoleColor.Cyan);
 
-        Console.WriteLine(Hand.DisplayCards());
+        Console.WriteLine($"\n{Hand.DisplayCards()}");
         ConsoleUI.WriteColoredLine(Hand.Value, ConsoleColor.Magenta);
 
         Thread.Sleep(2000);
@@ -65,9 +65,9 @@ public static class Dealer
 
         Console.Clear();
 
-        ConsoleUI.WriteColoredLine("Resolving dealer's hand...\n", ConsoleColor.Cyan);
+        ConsoleUI.WriteColoredLine("Resolving dealer's hand...", ConsoleColor.Cyan);
 
-        Console.WriteLine(Hand.DisplayCards());
+        Console.WriteLine($"\n{Hand.DisplayCards()}");
         ConsoleUI.WriteColoredLine(Hand.Value, ConsoleColor.Magenta);
 
         Thread.Sleep(2000);
@@ -83,8 +83,8 @@ public static class Dealer
 
             ConsoleColor dealerHandColor = (Hand.IsBusted) ? bustedDealerHandColor : regularDealerHandColor;
 
-            ConsoleUI.WriteColoredLine("Resolving dealer's hand...\n", ConsoleColor.Cyan);
-            Console.WriteLine(Hand.DisplayCards());
+            ConsoleUI.WriteColoredLine("Resolving dealer's hand...", ConsoleColor.Cyan);
+            Console.WriteLine($"\n{Hand.DisplayCards()}");
             ConsoleUI.WriteColoredLine(Hand.Value, dealerHandColor);
 
             if (Hand.IsBusted)
