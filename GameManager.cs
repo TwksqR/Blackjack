@@ -84,7 +84,15 @@ public static class GameManager
     {
         int roundNumber = 0;
 
+        // NOTE: Comment to play with unshuffled deck
         Dealer.ShuffleDeck();
+
+        /*
+        Dealer.Deck.Insert(0, new(11, Suit.Spades));
+        Dealer.Deck.Insert(0, new(1, Suit.Spades));
+        Dealer.Deck.Insert(0, new(6, Suit.Spades));
+        Dealer.Deck.Insert(0, new(1, Suit.Spades));
+        */
 
         do
         {
@@ -132,7 +140,7 @@ public static class GameManager
                     Thread.Sleep(2000);
                 }
 
-                Option selectedOption = DisplayOptionsMenu(options, 0, 3);
+                Option selectedOption = DisplayMenu(options, 0, 3);
 
                 selectedOption.Action(Players[i]);
 
@@ -160,7 +168,10 @@ public static class GameManager
 
         Thread.Sleep(2000);
 
-        Dealer.Hand.Cards.Clear();
+        Dealer.Hand.Clear();
+
+        Dealer.Hand.DealCard(Dealer.Deck, false);
+        Dealer.Hand.DealCard(Dealer.Deck, true);
 
         Console.CursorVisible = true;
 
@@ -203,9 +214,6 @@ public static class GameManager
 
         Console.CursorVisible = false;
 
-        Dealer.Hand.DealCard(Dealer.Deck, false);
-        Dealer.Hand.DealCard(Dealer.Deck, true);
-
         foreach (Player player in Players)
         {
             for (int i = 0; i < player.Hands.Count; i++)
@@ -226,7 +234,7 @@ public static class GameManager
 
                     List<Option> turnOptions = hand.GetTurnOptions(player);
 
-                    Option selectedTurnOption = DisplayOptionsMenu(turnOptions, 0, 10);
+                    Option selectedTurnOption = DisplayMenu(turnOptions, 0, 10);
 
                     selectedTurnOption.Action(player);
 
@@ -293,7 +301,7 @@ public static class GameManager
 
                         Thread.Sleep(2000);
 
-                        hand.Cards[^1].RevealCard(true);
+                        hand.Cards[^1].IsFaceUp = true;
                         hand.UpdateValue();
 
                         if (hand.IsBusted)
@@ -407,7 +415,7 @@ public static class GameManager
         ConsoleUI.WriteColoredLine(string.Format("{0:C}", owner.Winnings), ConsoleColor.DarkGray);
     }
 
-    public static Option DisplayOptionsMenu(this IEnumerable<Option> options, int left, int top)
+    public static Option DisplayMenu(this IEnumerable<Option> options, int left, int top)
     {
         var optionNames = options.Select(option => option.Name);
         

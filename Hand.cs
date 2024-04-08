@@ -12,18 +12,17 @@ public class Hand
     {
         get
         {
+            //return _value;
             return _value - Cards.Where(card => !card.IsFaceUp).Sum(card => card.Value);
         }
 
-        set
-        {
-            _value = value;
-        }
+        set { _value = value; }
     }
 
-    public bool IsBusted { get; set; } = false;
+    public bool IsBusted { get; protected set; } = false;
 
-    public bool IsBlackjack { get; protected set; } = false; // Important for comparing hand values, where a Blackjack beats any other hand 
+    // Important for comparing hand values, where a Blackjack beats any other hand 
+    public bool IsBlackjack { get; protected set; } = false;
 
     public Hand()
     {
@@ -40,34 +39,29 @@ public class Hand
     {
         Value = Cards.Sum(card => card.Value);
 
-        var aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
+        Card? aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
 
         if ((aceWorthOne != null) && (Value <= 11))
         {
             aceWorthOne.SetValue(11);
-            Value += 10; // The value increases from 1 to 11, a difference of 10
-        }
-
-        if (Value < 21)
-        {
-            return;
+            UpdateValue();
         }
 
         if (Value > 21)
         {
-            var aceWorthEleven = Cards.FirstOrDefault(card => card.Value == 11);
+            Card? aceWorthEleven = Cards.FirstOrDefault(card => card.Value == 11);
 
             if (aceWorthEleven == null)
             {
                 IsBusted = true;
+                return;
             }
-            else
-            {
-                aceWorthEleven.SetValue(1);
-                Value -= 10; // The value decreases from 11 to 1, a difference of 10   
-            }
+
+            aceWorthEleven.SetValue(1);
+            UpdateValue();
         }
-        else if (Cards.Count == 2)
+
+        if ((Value == 21) && (Cards.Count == 2))
         {
             IsBlackjack = true;
         }
@@ -76,5 +70,12 @@ public class Hand
     public string DisplayCards()
     {
         return string.Join(' ', Cards.Select(card => card.ShortName));
+    }
+
+    public void Clear()
+    {
+        Cards.Clear();
+        IsBusted = false;
+        IsBlackjack = false;
     }
 }
