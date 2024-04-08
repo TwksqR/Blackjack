@@ -1,12 +1,8 @@
 namespace Twksqr.Blackjack;
 
-using System.Collections.Specialized;
-
 public sealed class PlayerHand : Hand
 {
     public int Bet { get; set; }
-
-    public string DisplayValue { get; private set; } = "?";
 
     public bool IsDoubledDown = false; // For rotating the card texture when made in Godot
 
@@ -21,43 +17,6 @@ public sealed class PlayerHand : Hand
         Bet = bet;
 
         Cards.CollectionChanged += UpdateValue;
-    }
-
-    protected override void UpdateValue(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        Value = Cards.Sum(card => card.Value);
-
-        var aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
-
-        if ((aceWorthOne != null) && (Value <= 10))
-        {
-            aceWorthOne.SetValue(11);
-            Value += 10; // The value increases from 1 to 11, a difference of 10
-        }
-        
-        if (Value > 21)
-        {
-            var aceWorthEleven = Cards.FirstOrDefault(card => card.Value == 11);
-
-            if (aceWorthEleven == null)
-            {
-                IsBusted = true;
-            }
-            else
-            {
-                aceWorthEleven.SetValue(1);
-                Value -= 10; // The value decreases from 11 to 1, a difference of 10   
-            }
-        }
-        else if ((Value == 21) && (Cards.Count == 2) && (!IsSplit))
-        {
-            IsBlackjack = true;
-        }
-
-        if (Cards[^1].IsFaceUp)
-        {
-            DisplayValue = Cards.Where(card => card.IsFaceUp).Sum(card => card.Value).ToString();
-        }
     }
 
     public List<Option> GetTurnOptions(Player owner)
@@ -95,7 +54,7 @@ public sealed class PlayerHand : Hand
             owner.Winnings -= Bet;
             Bet *= 2;
 
-            this.DealCard(Dealer.Deck, true);
+            this.DealCard(Dealer.Deck, !GameManager.DoubledDownCardsAreHidden);
 
             IsDoubledDown = true;
             IsResolved = true;
