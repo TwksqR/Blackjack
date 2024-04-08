@@ -4,6 +4,8 @@ using TwksqR;
 
 public static class GameManager
 {
+    private static readonly int _maxRounds = 2;
+
     public static List<Player> Players { get; private set; } = new();
 
     private static readonly int _minPlayers = 1;
@@ -11,7 +13,7 @@ public static class GameManager
 
     public static decimal InitialWinnings { get; } = 100m;
 
-    private static readonly int _minBet = 1;
+    private static readonly int _minBet = 5;
     private static readonly int _maxBet = 50;
 
     public static bool DoubledDownCardsAreHidden { get; } = true;
@@ -109,7 +111,7 @@ public static class GameManager
 
             for (int i = 0; i < Players.Count; i++)
             {
-                if (Players[i].Winnings == 0)
+                if (Players[i].Winnings < _minBet)
                 {
                     ConsoleUI.WriteColoredLine($"{Players[i].Name} has bust out!", ConsoleColor.Red);
 
@@ -119,6 +121,18 @@ public static class GameManager
 
                     Thread.Sleep(2000);
                 }
+            }
+
+            if ((_maxRounds > 0) && (roundNumber >= _maxRounds))
+            {
+                foreach (var player in Players)
+                {
+                    ConsoleUI.WriteColoredLine($"{player.Name} has finished with {string.Format("{0:C}", player.Winnings)}!", ConsoleColor.Green);
+
+                    ConsoleUI.DisplayPressEnter();
+                }
+
+                break;
             }
 
             for (int i = 0; i < Players.Count; i++)
@@ -158,13 +172,21 @@ public static class GameManager
             }
         }
         while (Players.Count > 0);
+
+        Console.Clear();
+
+        ConsoleUI.WriteColoredLine("Thanks for playing!", ConsoleColor.Magenta);
+
+        Thread.Sleep(2000);
     }
 
     public static void PlayRound(int roundNumber)
     {
         Console.Clear();
 
-        ConsoleUI.WriteColoredLine($"Round {roundNumber}", ConsoleColor.Magenta);
+        string roundDisplay = (_maxRounds > 0) ? $"Round {roundNumber}/{_maxRounds}" : $"Round {roundNumber}";
+
+        ConsoleUI.WriteColoredLine(roundDisplay, ConsoleColor.Magenta);
 
         Console.WriteLine($"\n{Dealer.Deck.Count} cards remaining in the deck");
 
@@ -363,7 +385,16 @@ public static class GameManager
                     // FIXME: #1: Index iterating over player hands is out of range after that player splits a hand
                     var hand = player.Hands[i];
 
+<<<<<<< Updated upstream
                     do
+=======
+                    if (hand.IsBlackjack)
+                    {
+                        continue;
+                    }
+
+                    while (!hand.IsResolved && !hand.IsBusted)
+>>>>>>> Stashed changes
                     {
                         Console.Clear();
 

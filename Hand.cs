@@ -19,7 +19,7 @@ public class Hand
         set { _value = value; }
     }
 
-    public bool IsBusted { get; protected set; } = false;
+    public virtual bool IsBusted { get; protected set; } = false;
 
     // Important for comparing hand values, where a Blackjack beats any other hand 
     public bool IsBlackjack { get; protected set; } = false;
