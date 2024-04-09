@@ -35,6 +35,8 @@ public static class GameManager
 
         GetPlayerNames(playerCount);
 
+        Console.CursorVisible = false;
+
         PlayGame();
 
         static int GetPlayerCount()
@@ -322,13 +324,12 @@ public static class GameManager
 
                     ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
 
-                    ConsoleUI.DisplayPressEnter();
+                    ConsoleUI.DisplayButtonPressEnter();
                 }
             }
         }
 
         Console.Clear();
-
 
         static void GetPlayerBets()
         {
