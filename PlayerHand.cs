@@ -3,7 +3,7 @@ namespace Twksqr.Blackjack;
 public sealed class PlayerHand : Hand
 {
     public decimal Bet { get; set; }
-    public decimal SideBet { get; set; }
+    public decimal InsuranceBet { get; set; }
 
     public bool IsDoubledDown = false; // For rotating the card texture when made in Godot
 
@@ -100,9 +100,9 @@ public sealed class PlayerHand : Hand
 
         void TakeInsurance(Player player)
         {
-            SideBet = Bet / 2m;
+            InsuranceBet = Bet / 2m;
 
-            player.Winnings -= SideBet;
+            player.Winnings -= InsuranceBet;
 
             IsInsured = true;
         }

@@ -7,7 +7,7 @@ public static class GameManager
     private static readonly int _maxRounds = 0;
     private static readonly bool _playersCanLeaveBeforeMaxRoundReached = false;
 
-    public static List<Player> Players { get; private set; } = new();
+    public static List<Player> Players { get; } = new();
 
     private static readonly int _minPlayers = 1;
     private static readonly int _maxPlayers = 7;
@@ -107,10 +107,10 @@ public static class GameManager
         Dealer.ShuffleDeck(Dealer.Deck);
 
         /*
+        Dealer.Deck.Insert(0, new(1, Suit.Spades));
         Dealer.Deck.Insert(0, new(13, Suit.Spades));
         Dealer.Deck.Insert(0, new(1, Suit.Spades));
-        Dealer.Deck.Insert(0, new(1, Suit.Spades));
-        Dealer.Deck.Insert(0, new(1, Suit.Spades));
+        Dealer.Deck.Insert(0, new(13, Suit.Spades));
         */
 
         do
@@ -281,7 +281,7 @@ public static class GameManager
                     var hand = player.Hands[0];
 
                     string playerHandResult = "Push";
-                    decimal playerHandPayout = hand.SideBet;
+                    string playerHandInsurancePayoutText = $"+{string.Format("{0:C}", hand.Bet)}";
 
                     if (hand.IsBlackjack)
                     {
@@ -302,15 +302,15 @@ public static class GameManager
 
                     if (hand.IsInsured)
                     {
-                        hand.SideBet *= 3;
+                        hand.InsuranceBet *= 3;
 
-                        player.Winnings += hand.SideBet;
+                        player.Winnings += hand.InsuranceBet;
 
-                        playerHandPayout = hand.SideBet;
+                        playerHandInsurancePayoutText = $"+{string.Format("{0:C}", hand.InsuranceBet)} insurance";
                     }
                     else
                     {
-                        hand.SideBet = 0;
+                        hand.InsuranceBet = 0;
                     }
 
                     Console.WriteLine($"\n{Dealer.Hand.DisplayCards()}");
@@ -321,7 +321,7 @@ public static class GameManager
                     ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
 
                     ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
-                    ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (+{string.Format("{0:C}", playerHandPayout)})", playerColor);
+                    ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} ({playerHandInsurancePayoutText})", playerColor);
 
                     ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
 
@@ -355,7 +355,7 @@ public static class GameManager
                         ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
 
                         ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
-                        ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (Insurance bet of {string.Format("{0:C}", hand.SideBet)} lost)", ConsoleColor.Red);
+                        ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (-{string.Format("{0:C}", hand.InsuranceBet)} insurance)", ConsoleColor.Red);
 
                         ConsoleUI.DisplayButtonPressEnter();
                     }
