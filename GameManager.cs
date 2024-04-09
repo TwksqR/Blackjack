@@ -139,7 +139,7 @@ public static class GameManager
                 {
                     ConsoleUI.WriteColoredLine($"{player.Name} has finished with {string.Format("{0:C}", player.Winnings)}!", ConsoleColor.Green);
 
-                    ConsoleUI.DisplayPressEnter();
+                    ConsoleUI.DisplayButtonPressEnter();
                 }
 
                 break;
@@ -323,7 +323,7 @@ public static class GameManager
 
                     ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
 
-                    ConsoleUI.DisplayPressEnter();
+                    ConsoleUI.DisplayButtonPressEnter();
                 }
 
                 return;
@@ -355,7 +355,7 @@ public static class GameManager
                         ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
                         ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (Insurance bet of {string.Format("{0:C}", hand.SideBet)} lost)", ConsoleColor.Red);
 
-                        ConsoleUI.DisplayPressEnter();
+                        ConsoleUI.DisplayButtonPressEnter();
                     }
                 }
             }
@@ -388,7 +388,7 @@ public static class GameManager
 
             ConsoleUI.WriteColoredLine("\nBlackjack!", ConsoleColor.Green);
 
-            ConsoleUI.DisplayPressEnter();
+            ConsoleUI.DisplayButtonPressEnter();
         }
 
         ResolvePlayerHands();
@@ -405,7 +405,7 @@ public static class GameManager
                 {
                     ConsoleColor playerColor;
 
-                    if ((DoubledDownCardsAreHidden) && (hand.IsDoubledDown))
+                    if (DoubledDownCardsAreHidden && hand.IsDoubledDown)
                     {
                         playerColor = ConsoleColor.Magenta;
 
