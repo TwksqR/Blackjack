@@ -395,7 +395,7 @@ public static class GameManager
 
         ResolvePlayerHands();
 
-        if (Players.Any(player => player.Hands.Any(hand => !hand.IsBusted && !hand.IsSurrendered)))
+        if (Players.Any(player => player.Hands.Any(hand => !hand.IsBusted && !hand.IsSurrendered && !hand.IsBlackjack)))
         {
             Console.Clear();
 
