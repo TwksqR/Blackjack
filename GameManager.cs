@@ -4,7 +4,7 @@ using TwksqR;
 
 public static class GameManager
 {
-    private static readonly int _maxRounds = 2;
+    private static readonly int _maxRounds = 0;
     private static readonly bool _playersCanLeaveBeforeMaxRoundReached = false;
 
     public static List<Player> Players { get; private set; } = new();
@@ -137,6 +137,8 @@ public static class GameManager
             {
                 foreach (var player in Players)
                 {
+                    Console.Clear();
+
                     ConsoleUI.WriteColoredLine($"{player.Name} has finished with {string.Format("{0:C}", player.Winnings)}!", ConsoleColor.Green);
 
                     ConsoleUI.DisplayButtonPressEnter();
@@ -567,7 +569,7 @@ public static class GameManager
                     // FIXME: #1: Index iterating over player hands is out of range after that player splits a hand
                     var hand = player.Hands[i];
 					
-                    while (!hand.IsResolved)
+                    while (!hand.IsResolved && !hand.IsBusted)
                     {
                         Console.Clear();
 
@@ -589,24 +591,6 @@ public static class GameManager
                             i--;
 
                             Thread.Sleep(2000);
-                        }
-                        if (hand.IsBusted)
-                        {
-                            ConsoleUI.WriteColoredLine("\nBust", ConsoleColor.Red);
-                            ConsoleUI.WriteColoredLine(string.Format("{0:C}", player.Winnings), ConsoleColor.Red);
-
-                            hand.Bet = 0;
-
-                            hand.IsResolved = true;
-                        }
-                        else if (hand.IsSurrendered)
-                        {
-                            ConsoleUI.WriteColoredLine("\nSurrender!", ConsoleColor.Red);
-                            ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (+{string.Format("{0:C}", hand.Bet / 2m)})", ConsoleColor.Red);
-
-                            hand.Bet = 0;
-
-                            hand.IsResolved = true;
                         }
                     }
 
@@ -636,6 +620,24 @@ public static class GameManager
 
         ConsoleUI.WriteColoredLine($"\n{owner.Name}", ConsoleColor.Cyan);
         ConsoleUI.WriteColoredLine(string.Format("{0:C}", owner.Winnings), ConsoleColor.DarkGray);
+
+        if (hand.IsBusted)
+        {
+            ConsoleUI.WriteColoredLine("\nBust", ConsoleColor.Red);
+        
+            hand.Bet = 0;
+
+            hand.IsResolved = true;
+        }
+        else if (hand.IsSurrendered)
+        {
+            ConsoleUI.WriteColoredLine("\nSurrender!", ConsoleColor.Red);
+            ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", owner.Winnings)} (+{string.Format("{0:C}", hand.Bet / 2m)})", ConsoleColor.Red);
+
+            hand.Bet = 0;
+
+            hand.IsResolved = true;
+        }
     }
 
     public static Option DisplayMenu(this IEnumerable<Option> options, int left, int top)

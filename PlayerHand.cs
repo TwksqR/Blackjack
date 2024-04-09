@@ -1,5 +1,3 @@
-using System.Dynamic;
-
 namespace Twksqr.Blackjack;
 
 public sealed class PlayerHand : Hand
