@@ -4,6 +4,9 @@ using TwksqR;
 
 public static class GameManager
 {
+    private static readonly int _maxRounds = 2;
+    private static readonly bool _playersCanLeaveBeforeMaxRoundReached = false;
+
     public static List<Player> Players { get; private set; } = new();
 
     private static readonly int _minPlayers = 1;
@@ -11,7 +14,7 @@ public static class GameManager
 
     public static decimal InitialWinnings { get; } = 100m;
 
-    private static readonly int _minBet = 1;
+    private static readonly int _minBet = 5;
     private static readonly int _maxBet = 50;
 
     public static bool DoubledDownCardsAreHidden { get; } = true;
@@ -31,6 +34,8 @@ public static class GameManager
         Console.CursorVisible = false;
 
         GetPlayerNames(playerCount);
+
+        Console.CursorVisible = false;
 
         PlayGame();
 
@@ -116,7 +121,7 @@ public static class GameManager
 
             for (int i = 0; i < Players.Count; i++)
             {
-                if (Players[i].Winnings == 0)
+                if (Players[i].Winnings < _minBet)
                 {
                     ConsoleUI.WriteColoredLine($"{Players[i].Name} has bust out!", ConsoleColor.Red);
 
@@ -128,50 +133,73 @@ public static class GameManager
                 }
             }
 
-            for (int i = 0; i < Players.Count; i++)
+            if ((_maxRounds > 0) && (roundNumber >= _maxRounds))
             {
-                Console.Clear();
-
-                ConsoleUI.WriteColoredLine($"{Players[i].Name}, play again?", ConsoleColor.Cyan);
-                ConsoleUI.WriteColoredLine($"Winnings: {string.Format("{0:C}", Players[i].Winnings)}", ConsoleColor.Green);
-
-                var options = new Option[]
+                foreach (var player in Players)
                 {
-                    new("Play again", PlayAgain),
-                    new("Walk out", WalkOut)
-                };
+                    ConsoleUI.WriteColoredLine($"{player.Name} has finished with {string.Format("{0:C}", player.Winnings)}!", ConsoleColor.Green);
 
-                static void PlayAgain(Player player) {}
+                    ConsoleUI.DisplayPressEnter();
+                }
 
-                static void WalkOut(Player player)
+                break;
+            }
+
+            if ((_maxRounds == 0) || _playersCanLeaveBeforeMaxRoundReached)
+            {
+                for (int i = 0; i < Players.Count; i++)
                 {
                     Console.Clear();
 
-                    ConsoleUI.WriteColoredLine($"{player.Name} has walked out with {string.Format("{0:C}", player.Winnings)}!", ConsoleColor.Green);
+                    ConsoleUI.WriteColoredLine($"{Players[i].Name}, play again?", ConsoleColor.Cyan);
+                    ConsoleUI.WriteColoredLine($"Winnings: {string.Format("{0:C}", Players[i].Winnings)}", ConsoleColor.Green);
 
-                    Players.Remove(player);
+                    var options = new Option[]
+                    {
+                        new("Play again", PlayAgain),
+                        new("Walk out", WalkOut)
+                    };
 
-                    Thread.Sleep(2000);
-                }
+                    static void PlayAgain(Player player) {}
 
-                var selectedOption = DisplayMenu(options, 0, 3);
+                    static void WalkOut(Player player)
+                    {
+                        Console.Clear();
 
-                selectedOption.Action(Players[i]);
+                        ConsoleUI.WriteColoredLine($"{player.Name} has walked out with {string.Format("{0:C}", player.Winnings)}!", ConsoleColor.Green);
 
-                if (selectedOption.Name == "Walk out")
-                {
-                    i--;
+                        Players.Remove(player);
+
+                        Thread.Sleep(2000);
+                    }
+
+                    var selectedOption = DisplayMenu(options, 0, 3);
+
+                    selectedOption.Action(Players[i]);
+
+                    if (selectedOption.Name == "Walk out")
+                    {
+                        i--;
+                    }
                 }
             }
         }
         while (Players.Count > 0);
+
+        Console.Clear();
+
+        ConsoleUI.WriteColoredLine("Thanks for playing!", ConsoleColor.Magenta);
+
+        Thread.Sleep(2000);
     }
 
     public static void PlayRound(int roundNumber)
     {
         Console.Clear();
 
-        ConsoleUI.WriteColoredLine($"Round {roundNumber}", ConsoleColor.Magenta);
+        string roundDisplay = (_maxRounds > 0) ? $"Round {roundNumber}/{_maxRounds}" : $"Round {roundNumber}";
+
+        ConsoleUI.WriteColoredLine(roundDisplay, ConsoleColor.Magenta);
 
         Console.WriteLine($"\n{Dealer.Deck.Count} cards remaining in the deck");
 
@@ -475,7 +503,7 @@ public static class GameManager
 
                     ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
 
-                    ConsoleUI.DisplayPressEnter();
+                    ConsoleUI.DisplayButtonPressEnter();
                 }
             }
         }
@@ -538,7 +566,7 @@ public static class GameManager
                 {
                     // FIXME: #1: Index iterating over player hands is out of range after that player splits a hand
                     var hand = player.Hands[i];
-
+					
                     while (!hand.IsResolved)
                     {
                         Console.Clear();

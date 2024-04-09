@@ -12,16 +12,14 @@ public class Hand
     {
         get
         {
-            //return _value;
             return _value - Cards.Where(card => !card.IsFaceUp).Sum(card => card.Value);
         }
 
         set { _value = value; }
     }
 
-    public bool IsBusted { get; protected set; } = false;
+    public virtual bool IsBusted { get; protected set; } = false;
 
-    // Important for comparing hand values, where a Blackjack beats any other hand 
     public bool IsBlackjack { get; protected set; } = false;
 
     public Hand()
@@ -46,8 +44,7 @@ public class Hand
             aceWorthOne.SetValue(11);
             UpdateValue();
         }
-
-        if (Value > 21)
+        else if (Value > 21)
         {
             Card? aceWorthEleven = Cards.FirstOrDefault(card => card.Value == 11);
 
@@ -60,8 +57,7 @@ public class Hand
             aceWorthEleven.SetValue(1);
             UpdateValue();
         }
-
-        if ((Value == 21) && (Cards.Count == 2))
+        else if ((Value == 21) && (Cards.Count == 2))
         {
             IsBlackjack = true;
         }
