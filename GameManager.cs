@@ -5,6 +5,7 @@ using TwksqR;
 public static class GameManager
 {
     private static readonly int _maxRounds = 2;
+    private static readonly bool _playersCanLeaveBeforeMaxRoundReached = false;
 
     public static List<Player> Players { get; private set; } = new();
 
@@ -33,6 +34,8 @@ public static class GameManager
         Console.CursorVisible = false;
 
         GetPlayerNames(playerCount);
+
+        Console.CursorVisible = false;
 
         PlayGame();
 
@@ -135,39 +138,42 @@ public static class GameManager
                 break;
             }
 
-            for (int i = 0; i < Players.Count; i++)
+            if ((_maxRounds == 0) || _playersCanLeaveBeforeMaxRoundReached)
             {
-                Console.Clear();
-
-                ConsoleUI.WriteColoredLine($"{Players[i].Name}, play again?", ConsoleColor.Cyan);
-                ConsoleUI.WriteColoredLine($"Winnings: {string.Format("{0:C}", Players[i].Winnings)}", ConsoleColor.Green);
-
-                var options = new Option[]
-                {
-                    new("Play again", PlayAgain),
-                    new("Walk out", WalkOut)
-                };
-
-                static void PlayAgain(Player player) {}
-
-                static void WalkOut(Player player)
+                for (int i = 0; i < Players.Count; i++)
                 {
                     Console.Clear();
 
-                    ConsoleUI.WriteColoredLine($"{player.Name} has walked out with {string.Format("{0:C}", player.Winnings)}!", ConsoleColor.Green);
+                    ConsoleUI.WriteColoredLine($"{Players[i].Name}, play again?", ConsoleColor.Cyan);
+                    ConsoleUI.WriteColoredLine($"Winnings: {string.Format("{0:C}", Players[i].Winnings)}", ConsoleColor.Green);
 
-                    Players.Remove(player);
+                    var options = new Option[]
+                    {
+                        new("Play again", PlayAgain),
+                        new("Walk out", WalkOut)
+                    };
 
-                    Thread.Sleep(2000);
-                }
+                    static void PlayAgain(Player player) {}
 
-                var selectedOption = DisplayMenu(options, 0, 3);
+                    static void WalkOut(Player player)
+                    {
+                        Console.Clear();
 
-                selectedOption.Action(Players[i]);
+                        ConsoleUI.WriteColoredLine($"{player.Name} has walked out with {string.Format("{0:C}", player.Winnings)}!", ConsoleColor.Green);
 
-                if (selectedOption.Name == "Walk out")
-                {
-                    i--;
+                        Players.Remove(player);
+
+                        Thread.Sleep(2000);
+                    }
+
+                    var selectedOption = DisplayMenu(options, 0, 3);
+
+                    selectedOption.Action(Players[i]);
+
+                    if (selectedOption.Name == "Walk out")
+                    {
+                        i--;
+                    }
                 }
             }
         }
@@ -318,13 +324,12 @@ public static class GameManager
 
                     ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
 
-                    ConsoleUI.DisplayPressEnter();
+                    ConsoleUI.DisplayButtonPressEnter();
                 }
             }
         }
 
         Console.Clear();
-
 
         static void GetPlayerBets()
         {

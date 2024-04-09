@@ -142,18 +142,7 @@ public static class ConsoleUI
         return isVerified;
     }
 
-    public static bool TryRead(out string output)
-    {
-        Console.CursorVisible = true;
-
-        string input = Console.ReadLine() ?? "";
-
-        output = input;
-
-        return true;
-    }
-
-    public static void DisplayPressEnter()
+    public static void DisplayButtonPressEnter()
     {
         DisplayButton("Press [Enter] to continue");
     }
@@ -173,6 +162,12 @@ public static class ConsoleUI
     {
         Console.SetCursorPosition(left, top);
 
-        DisplayButton(button);
+        Console.CursorVisible = false;
+
+        WriteColoredLine(button, _selectedOptionColor);
+        
+        while (Console.ReadKey().Key != ConsoleKey.Enter) {}
+
+        Console.CursorVisible = true;
     }
 }
