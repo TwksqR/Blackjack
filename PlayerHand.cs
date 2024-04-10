@@ -108,7 +108,7 @@ public sealed class PlayerHand : Hand
         State = HandState.Surrendered;
     }
 
-    public Option[] GetInsuranceOptions(Player player)
+    public Option[] GetInsuranceOptions()
     {
         return new Option[]
         {

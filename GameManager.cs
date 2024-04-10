@@ -222,7 +222,7 @@ public static class GameManager
 
         if (Dealer.Hand.Cards[1].Value >= 10)
         {
-            if (Dealer.Hand.Cards[1].Value == 11)
+            if (Dealer.Hand.Cards[1].Value == 11) // if (Dealer.Hand.Cards[1].Rank == 1)
             {
                 foreach (var player in Players)
                 {
@@ -230,7 +230,7 @@ public static class GameManager
 
                     DisplayHands(player.Hands[0], player);
 
-                    var insuranceOptions = player.Hands[0].GetInsuranceOptions(player);
+                    var insuranceOptions = player.Hands[0].GetInsuranceOptions();
 
                     ConsoleUI.WriteColoredLine("\nInsurance?", ConsoleColor.Cyan);
                     Option selectedInsuranceOption = DisplayMenu(insuranceOptions, 0, 11);
@@ -255,7 +255,7 @@ public static class GameManager
 
             if (Dealer.Hand.State == HandState.Blackjack)
             {
-                ConsoleUI.WriteColoredLine("Blackjack!", ConsoleColor.Red);
+                Console.WriteLine("Blackjack!");
 
                 Console.WriteLine($"\n{Dealer.Hand.DisplayCards()}");
                 ConsoleUI.WriteColoredLine(Dealer.Hand.Value, ConsoleColor.Magenta);
@@ -325,6 +325,11 @@ public static class GameManager
                     ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
 
                     ConsoleUI.DisplayButtonPressEnter();
+
+                    if (hand.State == HandState.Blackjack)
+                    {
+                        player.Hands.Remove(hand);
+                    }
                 }
 
                 return;
@@ -391,122 +396,121 @@ public static class GameManager
             ConsoleUI.WriteColoredLine("\nBlackjack!", ConsoleColor.Green);
 
             ConsoleUI.DisplayButtonPressEnter();
+
+            player.Hands.Remove(hand);
         }
 
         ResolvePlayerTurns();
 
-        if (Players.Any(player => player.Hands.Any(hand => (hand.State == HandState.Stood) || (hand.State == HandState.DoubledDown))))
+        Console.Clear();
+
+        if (!Players.Any(player => player.Hands.Any()))
         {
-            Console.Clear();
+            return;
+        }
 
-            Dealer.ResolveHand();
+        Dealer.ResolveHand();
 
-            foreach (var player in Players)
+        foreach (var player in Players)
+        {
+            foreach (var hand in player.Hands)
             {
-                foreach (var hand in player.Hands)
+                ConsoleColor playerColor;
+
+                if (DoubledDownCardsAreHidden && (hand.State == HandState.DoubledDown))
                 {
-                    ConsoleColor playerColor;
-
-                    if (DoubledDownCardsAreHidden && (hand.State == HandState.DoubledDown))
-                    {
-                        playerColor = ConsoleColor.Magenta;
-
-                        Console.Clear();
-
-                        ConsoleUI.WriteColoredLine($"Revealing {player.Name}'s hand...", ConsoleColor.Cyan);
-
-                        Console.WriteLine($"\n{hand.DisplayCards()}");
-                        ConsoleUI.WriteColoredLine(hand.Value, playerColor);
-                        ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
-
-                        ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
-
-                        Thread.Sleep(2000);
-
-                        hand.Cards[^1].IsFaceUp = true;
-                        hand.UpdateValue();
-
-                        if (hand.State == HandState.Busted)
-                        {
-                            playerColor = ConsoleColor.Red;
-                        }
-
-                        Console.Clear();
-
-                        ConsoleUI.WriteColoredLine($"Revealing {player.Name}'s hand...", ConsoleColor.Cyan);
-
-                        Console.WriteLine($"\n{hand.DisplayCards()}");
-                        ConsoleUI.WriteColoredLine(hand.Value, playerColor);
-                        ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
-
-                        ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
-
-                        if (hand.State == HandState.Busted)
-                        {
-                            ConsoleUI.WriteColoredLine("\nBust", playerColor);
-                            ConsoleUI.WriteColoredLine(string.Format("{0:C}", player.Winnings), ConsoleColor.Red);
-
-                            hand.Bet = 0;
-                        }
-
-                        Thread.Sleep(2000);
-                    }
-
-                    if ((hand.State == HandState.Surrendered) || (hand.State == HandState.Busted) || (hand.State == HandState.Blackjack))
-                    {
-                        continue;
-                    }
+                    playerColor = ConsoleColor.Magenta;
 
                     Console.Clear();
 
-                    ConsoleColor winColor = ConsoleColor.Green;
-                    ConsoleColor loseColor = ConsoleColor.Red;
-                    ConsoleColor tieColor = ConsoleColor.DarkGray;
-
-                    ConsoleColor dealerColor = tieColor;
-                    playerColor = tieColor;
-
-                    string playerHandResult = "Push";
-
-                    if ((hand.Value > Dealer.Hand.Value) || (Dealer.Hand.State == HandState.Busted))
-                    {
-                        dealerColor = loseColor;
-                        playerColor = winColor;
-
-                        playerHandResult = "Win";
-
-                        hand.Bet *= 2;
-
-                        player.Winnings += hand.Bet;
-                    }
-                    else if (hand.Value < Dealer.Hand.Value)
-                    {
-                        dealerColor = winColor;
-                        playerColor = loseColor;
-
-                        playerHandResult = "Lose";
-
-                        hand.Bet = 0;
-                    }
-                    else
-                    {
-                        player.Winnings += hand.Bet;
-                    }
-
-                    Console.WriteLine($"\n{Dealer.Hand.DisplayCards()}");
-                    ConsoleUI.WriteColoredLine(Dealer.Hand.Value, dealerColor);
+                    ConsoleUI.WriteColoredLine($"Revealing {player.Name}'s hand...", ConsoleColor.Cyan);
 
                     Console.WriteLine($"\n{hand.DisplayCards()}");
                     ConsoleUI.WriteColoredLine(hand.Value, playerColor);
                     ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
 
                     ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
-                    ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (+{string.Format("{0:C}", hand.Bet)})", playerColor);
 
-                    ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
+                    Thread.Sleep(2000);
 
-                    ConsoleUI.DisplayButtonPressEnter();
+                    hand.Cards[^1].IsFaceUp = true;
+                    hand.UpdateValue();
+
+                    if (hand.State == HandState.Busted)
+                    {
+                        playerColor = ConsoleColor.Red;
+                    }
+
+                    Console.Clear();
+
+                    Console.WriteLine($"{player.Name}'s hand revealed.");
+
+                    Console.WriteLine($"\n{hand.DisplayCards()}");
+                    ConsoleUI.WriteColoredLine(hand.Value, playerColor);
+                    ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
+
+                    ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
+
+                    if (hand.State == HandState.Busted)
+                    {
+                        ConsoleUI.WriteColoredLine("\nBust", playerColor);
+                        ConsoleUI.WriteColoredLine(string.Format("{0:C}", player.Winnings), ConsoleColor.Red);
+
+                        hand.Bet = 0;
+                    }
+
+                    Thread.Sleep(2000);
                 }
+
+                Console.Clear();
+
+                ConsoleColor winColor = ConsoleColor.Green;
+                ConsoleColor loseColor = ConsoleColor.Red;
+                ConsoleColor tieColor = ConsoleColor.DarkGray;
+
+                ConsoleColor dealerColor = tieColor;
+                playerColor = tieColor;
+
+                string playerHandResult = "Push";
+
+                if ((hand.Value > Dealer.Hand.Value) || (Dealer.Hand.State == HandState.Busted))
+                {
+                    dealerColor = loseColor;
+                    playerColor = winColor;
+
+                    playerHandResult = "Win";
+
+                    hand.Bet *= 2;
+
+                    player.Winnings += hand.Bet;
+                }
+                else if (hand.Value < Dealer.Hand.Value)
+                {
+                    dealerColor = winColor;
+                    playerColor = loseColor;
+
+                    playerHandResult = "Lose";
+
+                    hand.Bet = 0;
+                }
+                else
+                {
+                    player.Winnings += hand.Bet;
+                }
+
+                Console.WriteLine($"\n{Dealer.Hand.DisplayCards()}");
+                ConsoleUI.WriteColoredLine(Dealer.Hand.Value, dealerColor);
+
+                Console.WriteLine($"\n{hand.DisplayCards()}");
+                ConsoleUI.WriteColoredLine(hand.Value, playerColor);
+                ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
+
+                ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
+                ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (+{string.Format("{0:C}", hand.Bet)})", playerColor);
+
+                ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
+
+                ConsoleUI.DisplayButtonPressEnter();
             }
         }
 
@@ -568,11 +572,6 @@ public static class GameManager
                 {
                     // FIXME: #1: Index iterating over player hands is out of range after that player splits a hand
                     var hand = player.Hands[i];
-
-                    if (hand.State == HandState.Blackjack)
-                    {
-                        continue;
-                    }
 					
                     while ((hand.State == HandState.Active) || (hand.State == HandState.Split))
                     {
@@ -636,6 +635,8 @@ public static class GameManager
             ConsoleUI.WriteColoredLine("\nBust", ConsoleColor.Red);
         
             hand.Bet = 0;
+
+            owner.Hands.Remove(hand);
         }
         else if (hand.State == HandState.Surrendered)
         {
@@ -643,6 +644,8 @@ public static class GameManager
             ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", owner.Winnings)} (+{string.Format("{0:C}", hand.Bet / 2m)})", ConsoleColor.Red);
 
             hand.Bet = 0;
+
+            owner.Hands.Remove(hand);
         }
     }
 
