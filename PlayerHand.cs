@@ -108,7 +108,7 @@ public sealed class PlayerHand : Hand
         }
     }
 
-    public Option[] GetInsuranceOptions(Player player)
+    public Option[] GetInsuranceOptions()
     {
         return new Option[]
         {
