@@ -19,7 +19,7 @@ public static class GameManager
 
     public static bool DoubledDownCardsAreHidden { get; } = true;
 
-    public static void StartGame()
+    public static void Execute()
     {
         Console.Clear();
         Console.CursorVisible = false;
@@ -29,6 +29,11 @@ public static class GameManager
 
         ConsoleUI.DisplayButton("Let's play!");
 
+        StartGame();
+    }
+
+    public static void StartGame()
+    {
         int playerCount = GetPlayerCount();
 
         Console.CursorVisible = false;
@@ -36,8 +41,6 @@ public static class GameManager
         GetPlayerNames(playerCount);
 
         Console.CursorVisible = false;
-
-        PlayGame();
 
         static int GetPlayerCount()
         {
@@ -97,10 +100,7 @@ public static class GameManager
                 Players.Add(new Player(playerName));
             }
         }
-    }
 
-    public static void PlayGame()
-    {
         int roundNumber = 0;
 
         // NOTE: Comment to play with unshuffled deck
