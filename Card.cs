@@ -25,7 +25,7 @@ public class Card
 
     public Card(int rank, Suit suit)
     {
-        Rank = rank;
+        Rank = Math.Clamp(rank, 1, 13);
         Suit = suit;
 
         // All face cards (Jacks, Queens, Kings) are worth 10
