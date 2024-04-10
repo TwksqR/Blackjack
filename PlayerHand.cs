@@ -5,21 +5,41 @@ public sealed class PlayerHand : Hand
     public decimal Bet { get; set; }
     public decimal InsuranceBet { get; set; }
 
-    public bool IsDoubledDown = false; // For rotating the card texture when made in Godot
-
-    public bool IsSplit { get; private set; } = false;
-
-    public bool IsSurrendered { get; private set; } = false;
-
-    public bool IsInsured { get; private set; } = false;
-
-    public bool IsResolved { get; set; } = false;
-
     public PlayerHand(decimal bet)
     {
         Bet = bet;
 
         Cards.CollectionChanged += UpdateValue;
+    }
+
+    public new void UpdateValue()
+    {
+        Value = Cards.Sum(card => card.Value);
+
+        Card? aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
+
+        if ((aceWorthOne != null) && (Value <= 11))
+        {
+            aceWorthOne.SetValue(11);
+            UpdateValue();
+        }
+        else if (Value > 21)
+        {
+            Card? aceWorthEleven = Cards.FirstOrDefault(card => card.Value == 11);
+
+            if (aceWorthEleven == null)
+            {
+                State = HandState.Busted;
+                return;
+            }
+
+            aceWorthEleven.SetValue(1);
+            UpdateValue();
+        }
+        else if ((Value == 21) && (Cards.Count == 2) && (State != HandState.Split))
+        {
+            State = HandState.Blackjack;
+        }
     }
 
     public Option[] GetTurnOptions(Player owner)
@@ -59,8 +79,7 @@ public sealed class PlayerHand : Hand
 
             this.DealCard(Dealer.Deck, !GameManager.DoubledDownCardsAreHidden);
 
-            IsDoubledDown = true;
-            IsResolved = true;
+            State = HandState.DoubledDown;
         }
 
         void Split(Player owner)
@@ -71,22 +90,21 @@ public sealed class PlayerHand : Hand
             newHand.Cards.Add(Cards[1]);
             Cards.RemoveAt(1);
 
-            IsSplit = true;
+            State = HandState.Split;
 
             owner.Hands.Add(newHand);
         }
 
         void Stand(Player owner)
         {
-            IsResolved = true;
+            State = HandState.Stood;
         }
 
         void Surrender(Player owner)
         {
             owner.Winnings += Bet / 2m;
 
-            IsSurrendered = true;
-            IsResolved = true;
+            State = HandState.Surrendered;
         }
     }
 
@@ -103,8 +121,6 @@ public sealed class PlayerHand : Hand
             InsuranceBet = Bet / 2m;
 
             player.Winnings -= InsuranceBet;
-
-            IsInsured = true;
         }
 
         void IgnoreInsurance(Player player) {}

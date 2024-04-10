@@ -42,12 +42,12 @@ public static class Dealer
         Console.WriteLine("\nReshuffling deck. (A reshuffle occurs when there are 234 or less cards in the deck)");
     }
 
-    public static void DealCard(this Hand hand, List<Card> deck, bool dealtCardIsToBeRevealed)
+    public static void DealCard(this Hand hand, IList<Card> deck, bool dealtCardIsFaceUp)
     {
         Card dealtCard = deck[0];
         deck.RemoveAt(0);
 
-        dealtCard.IsFaceUp = dealtCardIsToBeRevealed;
+        dealtCard.IsFaceUp = dealtCardIsFaceUp;
 
         hand.Cards.Add(dealtCard);
     }
@@ -81,13 +81,13 @@ public static class Dealer
 
             Console.Clear();
 
-            ConsoleColor dealerHandColor = (Hand.IsBusted) ? bustedDealerHandColor : regularDealerHandColor;
+            ConsoleColor dealerHandColor = (Hand.State == HandState.Busted) ? bustedDealerHandColor : regularDealerHandColor;
 
             ConsoleUI.WriteColoredLine("Resolving dealer's hand...", ConsoleColor.Cyan);
             Console.WriteLine($"\n{Hand.DisplayCards()}");
             ConsoleUI.WriteColoredLine(Hand.Value, dealerHandColor);
 
-            if (Hand.IsBusted)
+            if (Hand.State == HandState.Busted)
             {
                 ConsoleUI.WriteColoredLine("\nBust", ConsoleColor.Red);
             }
