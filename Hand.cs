@@ -18,7 +18,7 @@ public class Hand
         set { _value = value; }
     }
 
-    public HandState State { get; protected set;} = HandState.Active;
+    public HandState State { get; protected set; } = HandState.Active;
 
     public Hand()
     {

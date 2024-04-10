@@ -73,6 +73,11 @@ public sealed class PlayerHand : Hand
         this.DealCard(Dealer.Deck, true);
     }
 
+    public void Stand(Player owner)
+    {
+        State = HandState.Stood;
+    }
+
     private void DoubleDown(Player owner)
     {
         owner.Winnings -= Bet;
@@ -94,11 +99,6 @@ public sealed class PlayerHand : Hand
         State = HandState.Split;
 
         owner.Hands.Add(newHand);
-    }
-
-    public void Stand(Player owner)
-    {
-        State = HandState.Stood;
     }
 
     private void Surrender(Player owner)
