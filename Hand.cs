@@ -35,12 +35,17 @@ public class Hand
     {
         Value = Cards.Sum(card => card.Value);
 
-        Card? aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
-
-        if ((aceWorthOne != null) && (Value <= 11))
+        if (Value <= 11)
         {
+            Card? aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
+
+            if (aceWorthOne == null)
+            {
+                return;
+            }
+            
             aceWorthOne.SetValue(11);
-            UpdateValue();
+            Value += 10;
         }
         else if (Value > 21)
         {
@@ -53,9 +58,10 @@ public class Hand
             }
 
             aceWorthEleven.SetValue(1);
-            UpdateValue();
+            Value -= 10;
         }
-        else if ((Value == 21) && (Cards.Count == 2))
+        
+        if ((Value == 21) && (Cards.Count == 2) && (State != HandState.Split))
         {
             State = HandState.Blackjack;
         }

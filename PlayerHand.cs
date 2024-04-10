@@ -12,36 +12,6 @@ public sealed class PlayerHand : Hand
         Cards.CollectionChanged += UpdateValue;
     }
 
-    public new void UpdateValue()
-    {
-        Value = Cards.Sum(card => card.Value);
-
-        Card? aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
-
-        if ((aceWorthOne != null) && (Value <= 11))
-        {
-            aceWorthOne.SetValue(11);
-            UpdateValue();
-        }
-        else if (Value > 21)
-        {
-            Card? aceWorthEleven = Cards.FirstOrDefault(card => card.Value == 11);
-
-            if (aceWorthEleven == null)
-            {
-                State = HandState.Busted;
-                return;
-            }
-
-            aceWorthEleven.SetValue(1);
-            UpdateValue();
-        }
-        else if ((Value == 21) && (Cards.Count == 2) && (State != HandState.Split))
-        {
-            State = HandState.Blackjack;
-        }
-    }
-
     public Option[] GetTurnOptions(Player owner)
     {
         var turnOptions = new List<Option>()
