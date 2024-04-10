@@ -66,46 +66,46 @@ public sealed class PlayerHand : Hand
         }
 
         return turnOptions.ToArray();
+    }
 
-        void Hit(Player owner)
-        {
-            this.DealCard(Dealer.Deck, true);
-        }
+    private void Hit(Player owner)
+    {
+        this.DealCard(Dealer.Deck, true);
+    }
 
-        void DoubleDown(Player owner)
-        {
-            owner.Winnings -= Bet;
-            Bet *= 2;
+    private void DoubleDown(Player owner)
+    {
+        owner.Winnings -= Bet;
+        Bet *= 2;
 
-            this.DealCard(Dealer.Deck, !GameManager.DoubledDownCardsAreHidden);
+        this.DealCard(Dealer.Deck, !GameManager.DoubledDownCardsAreHidden);
 
-            State = HandState.DoubledDown;
-        }
+        State = HandState.DoubledDown;
+    }
 
-        void Split(Player owner)
-        {
-            owner.Winnings -= Bet;
+    private void Split(Player owner)
+    {
+        owner.Winnings -= Bet;
 
-            var newHand = new PlayerHand(Bet);
-            newHand.Cards.Add(Cards[1]);
-            Cards.RemoveAt(1);
+        var newHand = new PlayerHand(Bet);
+        newHand.Cards.Add(Cards[1]);
+        Cards.RemoveAt(1);
 
-            State = HandState.Split;
+        State = HandState.Split;
 
-            owner.Hands.Add(newHand);
-        }
+        owner.Hands.Add(newHand);
+    }
 
-        void Stand(Player owner)
-        {
-            State = HandState.Stood;
-        }
+    public void Stand(Player owner)
+    {
+        State = HandState.Stood;
+    }
 
-        void Surrender(Player owner)
-        {
-            owner.Winnings += Bet / 2m;
+    private void Surrender(Player owner)
+    {
+        owner.Winnings += Bet / 2m;
 
-            State = HandState.Surrendered;
-        }
+        State = HandState.Surrendered;
     }
 
     public Option[] GetInsuranceOptions(Player player)

@@ -106,12 +106,11 @@ public static class GameManager
         // NOTE: Comment to play with unshuffled deck
         Dealer.ShuffleDeck(Dealer.Deck);
 
-        /*
-        Dealer.Deck.Insert(0, new(1, Suit.Spades));
-        Dealer.Deck.Insert(0, new(13, Suit.Spades));
         Dealer.Deck.Insert(0, new(1, Suit.Spades));
         Dealer.Deck.Insert(0, new(1, Suit.Spades));
-        */
+        Dealer.Deck.Insert(0, new(9, Suit.Spades));
+        Dealer.Deck.Insert(0, new(1, Suit.Spades));
+        Dealer.Deck.Insert(0, new(1, Suit.Spades));
 
         do
         {
@@ -597,6 +596,11 @@ public static class GameManager
                             i--;
 
                             Thread.Sleep(2000);
+                        }
+                        if (hand.Value == 21)
+                        {
+                            hand.Stand(player);
+                            break;
                         }
                     }
 
