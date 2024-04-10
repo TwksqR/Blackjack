@@ -18,9 +18,7 @@ public class Hand
         set { _value = value; }
     }
 
-    public virtual bool IsBusted { get; protected set; } = false;
-
-    public bool IsBlackjack { get; protected set; } = false;
+    public HandState State { get; protected set;} = HandState.Active;
 
     public Hand()
     {
@@ -50,7 +48,7 @@ public class Hand
 
             if (aceWorthEleven == null)
             {
-                IsBusted = true;
+                State = HandState.Busted;
                 return;
             }
 
@@ -59,7 +57,7 @@ public class Hand
         }
         else if ((Value == 21) && (Cards.Count == 2))
         {
-            IsBlackjack = true;
+            State = HandState.Blackjack;
         }
     }
 
@@ -71,7 +69,6 @@ public class Hand
     public void Reset()
     {
         Cards.Clear();
-        IsBusted = false;
-        IsBlackjack = false;
+        State = HandState.Active;
     }
 }
