@@ -110,7 +110,7 @@ public static class GameManager
         Dealer.Deck.Insert(0, new(1, Suit.Spades));
         Dealer.Deck.Insert(0, new(9, Suit.Spades));
         Dealer.Deck.Insert(0, new(1, Suit.Spades));
-        Dealer.Deck.Insert(0, new(1, Suit.Spades));
+        Dealer.Deck.Insert(0, new(13, Suit.Spades));
 
         do
         {
@@ -264,10 +264,6 @@ public static class GameManager
 
                 foreach (var player in Players)
                 {
-                    ConsoleColor playerColor;
-
-                    playerColor = ConsoleColor.Magenta;
-
                     Console.Clear();
 
                     ConsoleColor winColor = ConsoleColor.Green;
@@ -275,19 +271,25 @@ public static class GameManager
                     ConsoleColor tieColor = ConsoleColor.DarkGray;
 
                     ConsoleColor dealerColor = tieColor;
-                    playerColor = tieColor;
+                    ConsoleColor playerColor = tieColor;
 
                     var hand = player.Hands[0];
 
                     string playerHandResult = "Push";
-                    string playerHandInsurancePayoutText = $"+{string.Format("{0:C}", hand.Bet)}";
+
+                    decimal betPayout = 0;
+                    decimal insuranceBetPayout = 0;
+                    decimal profit = 0m;
+
+                    ConsoleColor betColor = ConsoleColor.Red;
+                    ConsoleColor insuranceBetColor = ConsoleColor.Red;
 
                     if (hand.State == HandState.Blackjack)
                     {
-                        dealerColor = tieColor;
-                        playerColor = tieColor;
-
                         player.Winnings += hand.Bet;
+
+                        betPayout = hand.Bet;
+                        betColor = ConsoleColor.Green;
                     }
                     else
                     {
@@ -296,20 +298,27 @@ public static class GameManager
 
                         playerHandResult = "Lose";
 
-                        hand.Bet = 0;
+                        profit -= hand.Bet;
                     }
 
                     if (hand.InsuranceBet > 0m)
                     {
-                        hand.InsuranceBet *= 3;
+                        player.Winnings += hand.InsuranceBet * 3;
+                        profit += hand.InsuranceBet * 2;
 
-                        player.Winnings += hand.InsuranceBet;
-
-                        playerHandInsurancePayoutText = $"+{string.Format("{0:C}", hand.InsuranceBet)} insurance";
+                        insuranceBetPayout = hand.InsuranceBet * 3;
+                        insuranceBetColor = ConsoleColor.Green;
                     }
-                    else
+
+                    ConsoleColor profitColor = ConsoleColor.DarkGray;
+
+                    if (profit > 0m)
                     {
-                        hand.InsuranceBet = 0;
+                        profitColor = ConsoleColor.Green;
+                    }
+                    else if (profit < 0m)
+                    {
+                        profitColor = ConsoleColor.Red;
                     }
 
                     Console.WriteLine($"\n{Dealer.Hand.DisplayCards()}");
@@ -319,8 +328,19 @@ public static class GameManager
                     ConsoleUI.WriteColoredLine(hand.Value, playerColor);
                     ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
 
+                    if (hand.InsuranceBet > 0m)
+                    {
+                        ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", hand.InsuranceBet)} insurance", ConsoleColor.DarkGray);
+                    }
+
                     ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
-                    ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} ({playerHandInsurancePayoutText})", playerColor);
+                    ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} ({string.Format("{0:C}", profit)} profit)", profitColor);
+                    ConsoleUI.WriteColoredLine(string.Format("{0:C}", betPayout), betColor);
+
+                    if (hand.InsuranceBet > 0m)
+                    {
+                        ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", insuranceBetPayout)} insurance", insuranceBetColor);
+                    }
 
                     ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
 
@@ -361,7 +381,7 @@ public static class GameManager
                         ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
 
                         ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
-                        ConsoleUI.WriteColoredLine($"(-{string.Format("{0:C}", hand.InsuranceBet)} insurance)", ConsoleColor.Red);
+                        ConsoleUI.WriteColoredLine($"-({string.Format("{0:C}", hand.InsuranceBet)} insurance)", ConsoleColor.Red);
 
                         ConsoleUI.DisplayButtonPressEnter();
                     }
