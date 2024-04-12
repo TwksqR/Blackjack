@@ -53,7 +53,7 @@ public sealed class PlayerHand : Hand
         owner.Winnings -= Bet;
         Bet *= 2;
 
-        this.DealCard(Dealer.Deck, !GameManager.DoubledDownCardsAreHidden);
+        this.DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
 
         State = HandState.DoubledDown;
     }

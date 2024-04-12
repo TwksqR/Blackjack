@@ -4,7 +4,7 @@ public sealed class Player
 {
     public string Name { get; }
 
-    public decimal Winnings { get; set; } = GameManager.InitialWinnings;
+    public decimal Winnings { get; set; } = Settings.InitialWinnings;
 
     public List<PlayerHand> Hands { get; } = new();
 

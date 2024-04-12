@@ -15,7 +15,7 @@ public class Hand
             return _value - Cards.Where(card => !card.IsFaceUp).Sum(card => card.Value);
         }
 
-        set { _value = value; }
+        protected set { _value = value; }
     }
 
     public HandState State { get; protected set; } = HandState.Active;
@@ -44,7 +44,7 @@ public class Hand
                 return;
             }
             
-            aceWorthOne.SetValue(11);
+            aceWorthOne.Value = 11;
             Value += 10;
         }
         else if (Value > 21)
@@ -57,7 +57,7 @@ public class Hand
                 return;
             }
 
-            aceWorthEleven.SetValue(1);
+            aceWorthEleven.Value = 1;
             Value -= 10;
         }
         
@@ -67,7 +67,7 @@ public class Hand
         }
     }
 
-    public string DisplayCards()
+    public string GetCardShortNames()
     {
         return string.Join(' ', Cards.Select(card => card.ShortName));
     }
