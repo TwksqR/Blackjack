@@ -56,8 +56,7 @@ public static class Dealer
     {
         ConsoleUI.WriteColoredLine("Revealing dealer's hand...", ConsoleColor.Cyan);
 
-        Console.WriteLine($"\n{Hand.DisplayCards()}");
-        ConsoleUI.WriteColoredLine(Hand.Value, ConsoleColor.Magenta);
+        Console.WriteLine($"\n{Hand.GetCardShortNames()}");
 
         Thread.Sleep(2000);
 
@@ -67,7 +66,7 @@ public static class Dealer
 
         ConsoleUI.WriteColoredLine("Resolving dealer's hand...", ConsoleColor.Cyan);
 
-        Console.WriteLine($"\n{Hand.DisplayCards()}");
+        Console.WriteLine($"\n{Hand.GetCardShortNames()}");
         ConsoleUI.WriteColoredLine(Hand.Value, ConsoleColor.Magenta);
 
         Thread.Sleep(2000);
@@ -84,7 +83,7 @@ public static class Dealer
             ConsoleColor dealerHandColor = (Hand.State == HandState.Busted) ? bustedDealerHandColor : regularDealerHandColor;
 
             ConsoleUI.WriteColoredLine("Resolving dealer's hand...", ConsoleColor.Cyan);
-            Console.WriteLine($"\n{Hand.DisplayCards()}");
+            Console.WriteLine($"\n{Hand.GetCardShortNames()}");
             ConsoleUI.WriteColoredLine(Hand.Value, dealerHandColor);
 
             if (Hand.State == HandState.Busted)

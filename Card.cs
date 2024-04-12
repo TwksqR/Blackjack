@@ -5,20 +5,26 @@ public class Card
     public int Rank { get; }
     public Suit Suit { get; }
     
-    public int Value { get; private set; }
+    private int _value;
+    public int Value
+    {
+        get { return _value; }
+         
+        set
+        {
+            _value = Math.Clamp(value, 1 , 11);
+        }
+    }
 
-    private string _shortName = "?";
+    private string _shortName = "??";
     public string ShortName
     {
         get
-        {
-            return (IsFaceUp) ? _shortName : "?";
+        { 
+            return (IsFaceUp) ? _shortName : "??";
         }
 
-        private set
-        {
-            _shortName = value;
-        }
+        private set { _shortName = value; }
     }
 
     public bool IsFaceUp { get; set; } = false;
@@ -55,11 +61,6 @@ public class Card
 
             return displayRank + displaySuit;
         }
-    }
-
-    public void SetValue(int newVal)
-    {
-        Value = Math.Clamp(newVal, 1 , 11);
     }
 
     public static bool Equals(Card card1, Card card2)
