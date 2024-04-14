@@ -1,5 +1,6 @@
 namespace Twksqr.Blackjack;
 
+using System.Collections.Specialized;
 using TwksqR;
 
 public static class GameManager
@@ -41,7 +42,7 @@ public static class GameManager
                 ConsoleUI.WriteColoredLine("Enter player count:", ConsoleColor.Cyan);
                 ConsoleUI.TryRead(out playerCount);
 
-                playerCountIsValid = (Settings.MinPlayers <= playerCount) && (playerCount <= Settings.MaxPlayers);
+                playerCountIsValid = (Settings.minPlayers <= playerCount) && (playerCount <= Settings.maxPlayers);
             }
             while (!playerCountIsValid);
 
@@ -163,7 +164,8 @@ public static class GameManager
                         Thread.Sleep(2000);
                     }
 
-                    var selectedOption = DisplayMenu(options, 0, 3);
+                    int selectedOptionIndex = DisplayMenu(options, 0, 3);
+                    Option selectedOption = options[selectedOptionIndex];
 
                     selectedOption.Action(Players[i]);
 
@@ -224,7 +226,8 @@ public static class GameManager
                     var insuranceOptions = player.Hands[0].GetInsuranceOptions();
 
                     ConsoleUI.WriteColoredLine("\nInsurance?", ConsoleColor.Cyan);
-                    Option selectedInsuranceOption = DisplayMenu(insuranceOptions, 0, 11);
+                    int selectedInsuranceOptionIndex = DisplayMenu(insuranceOptions, 0, 11);
+                    Option selectedInsuranceOption = insuranceOptions[selectedInsuranceOptionIndex];
 
                     selectedInsuranceOption.Action(player);
 
@@ -338,7 +341,6 @@ public static class GameManager
                 ConsoleUI.WriteColoredLine("Dealer does not have Blackjack.", ConsoleColor.White);
 
                 Console.WriteLine($"\n{Dealer.Hand.GetCardShortNames()}");
-                ConsoleUI.WriteColoredLine(Dealer.Hand.Value, ConsoleColor.Magenta);
 
                 Thread.Sleep(2000);
 
@@ -488,7 +490,7 @@ public static class GameManager
 
                         DisplayHands(hand, player);
 
-                        Option[] turnOptions = hand.GetTurnOptions(player);
+                        Option[] turnOptions = hand.GetTurnOptions(player).ToArray();
 
                         int selectedTurnOptionIndex = ConsoleUI.DisplayMenu(turnOptions);
 
@@ -500,6 +502,7 @@ public static class GameManager
                         {
                             i++;
                         }
+
                         if (hand.Value == 21)
                         {
                             hand.Stand(player);
@@ -618,7 +621,7 @@ public static class GameManager
         ConsoleColor dealerColor = tieColor;
         ConsoleColor playerColor = tieColor;
 
-        string playerHandResult = "Stand off";
+        string playerHandResult = "Standoff";
 
         if ((hand.Value > Dealer.Hand.Value) || (Dealer.Hand.State == HandState.Busted))
         {
@@ -658,12 +661,8 @@ public static class GameManager
         ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
     }
 
-    public static Option DisplayMenu(this IEnumerable<Option> options, int left, int top)
+    public static int DisplayMenu(this IEnumerable<Option> options, int left, int top)
     {
-        var optionNames = options.Select(option => option.Name);
-        
-        int selectedOptionIndex = ConsoleUI.DisplayMenu(optionNames, left, top);
-
-        return options.ElementAt(selectedOptionIndex);
+        return ConsoleUI.DisplayMenu(options.Select(option => option.Name), left, top);
     }
 }

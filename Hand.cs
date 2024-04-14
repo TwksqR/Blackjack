@@ -7,15 +7,15 @@ public class Hand
 {
     public ObservableCollection<Card> Cards { get; } = new();
     
-    private int _value;
+    private int value;
     public int Value
     {
         get
         {
-            return _value - Cards.Where(card => !card.IsFaceUp).Sum(card => card.Value);
+            return value - Cards.Where(card => !card.IsFaceUp).Sum(card => card.Value);
         }
 
-        protected set { _value = value; }
+        protected set { this.value = value; }
     }
 
     public HandState State { get; protected set; } = HandState.Active;

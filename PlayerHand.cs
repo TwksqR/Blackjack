@@ -12,7 +12,7 @@ public sealed class PlayerHand : Hand
         Cards.CollectionChanged += UpdateValue;
     }
 
-    public Option[] GetTurnOptions(Player owner)
+    public IEnumerable<Option> GetTurnOptions(Player player)
     {
         var turnOptions = new List<Option>()
         {
@@ -22,11 +22,11 @@ public sealed class PlayerHand : Hand
 
         if (Cards.Count == 2)
         {
-            if (owner.Winnings >= Bet)
+            if (player.Winnings >= Bet)
             {
                 turnOptions.Add(new Option("Double Down", DoubleDown));
 
-                if (((Cards[0].Rank == Cards[1].Rank) || (Cards[0].Value == Cards[1].Value)) && (owner.Hands.Count < 4))
+                if (((Cards[0].Rank == Cards[1].Rank) || (Cards[0].Value == Cards[1].Value)) && (player.Hands.Count < 4))
                 {
                     turnOptions.Add(new Option("Split", Split));
                 }
@@ -35,7 +35,7 @@ public sealed class PlayerHand : Hand
             turnOptions.Add(new Option("Surrender", Surrender));
         }
 
-        return turnOptions.ToArray();
+        return turnOptions;
     }
 
     private void Hit(Player owner)
@@ -53,7 +53,7 @@ public sealed class PlayerHand : Hand
         owner.Winnings -= Bet;
         Bet *= 2;
 
-        this.DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
+        this.DealCard(Dealer.Deck, !Settings.doubledDownCardsAreHidden);
 
         State = HandState.DoubledDown;
     }

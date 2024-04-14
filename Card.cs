@@ -5,26 +5,26 @@ public class Card
     public int Rank { get; }
     public Suit Suit { get; }
     
-    private int _value;
+    private int value;
     public int Value
     {
-        get { return _value; }
+        get { return this.value; }
          
         set
         {
-            _value = Math.Clamp(value, 1 , 11);
+            this.value = Math.Clamp(value, 1 , 11);
         }
     }
 
-    private string _shortName = "??";
+    private string shortName = "??";
     public string ShortName
     {
         get
         { 
-            return (IsFaceUp) ? _shortName : "??";
+            return (IsFaceUp) ? this.shortName : "??";
         }
 
-        private set { _shortName = value; }
+        private set { this.shortName = value; }
     }
 
     public bool IsFaceUp { get; set; } = false;
