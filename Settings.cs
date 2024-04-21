@@ -8,12 +8,12 @@ internal static class Settings
     internal static readonly int MinPlayers = 1;
     internal static readonly int MaxPlayers = 7;
 
-    internal static decimal InitialWinnings { get; } = 100m;
+    internal static readonly decimal InitialWinnings = 100m;
 
     internal static readonly int MinBet = 5;
     internal static readonly int MaxBet = 50;
 
-    internal static bool DoubledDownCardsAreHidden { get; } = true;
+    internal static readonly bool DoubledDownCardsAreHidden = true;
 
     internal static void InsertStartingCards(this IList<Card> deck, IEnumerable<int> cardValues)
     {
