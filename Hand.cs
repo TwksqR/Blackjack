@@ -2,6 +2,7 @@ namespace Twksqr.Blackjack;
 
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Runtime.InteropServices;
 
 public class Hand
 {
@@ -15,7 +16,7 @@ public class Hand
             return _value - Cards.Where(card => !card.IsFaceUp).Sum(card => card.Value);
         }
 
-        set { _value = value; }
+        protected set { _value = value; }
     }
 
     public HandState State { get; protected set; } = HandState.Active;
@@ -25,13 +26,7 @@ public class Hand
         Cards.CollectionChanged += UpdateValue;
     }
 
-    // This is ugly but if it works, it works
-    protected virtual void UpdateValue(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        UpdateValue();
-    }
-
-    public void UpdateValue()
+    public void UpdateValue(object? sender, EventArgs e)
     {
         Value = Cards.Sum(card => card.Value);
 
@@ -44,7 +39,7 @@ public class Hand
                 return;
             }
             
-            aceWorthOne.SetValue(11);
+            aceWorthOne.Value = 11;
             Value += 10;
         }
         else if (Value > 21)
@@ -57,17 +52,17 @@ public class Hand
                 return;
             }
 
-            aceWorthEleven.SetValue(1);
+            aceWorthEleven.Value = 1;
             Value -= 10;
         }
-        
-        if ((Value == 21) && (Cards.Count == 2) && (State != HandState.Split))
+
+        if (Value == 21)
         {
-            State = HandState.Blackjack;
+            State = ((Cards.Count == 2) && (State != HandState.Split)) ? HandState.Blackjack : HandState.Stood;
         }
     }
 
-    public string DisplayCards()
+    public string GetCardShortNames()
     {
         return string.Join(' ', Cards.Select(card => card.ShortName));
     }

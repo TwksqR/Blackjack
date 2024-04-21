@@ -1,3 +1,4 @@
+
 namespace Twksqr.Blackjack;
 
 public sealed class PlayerHand : Hand
@@ -12,7 +13,7 @@ public sealed class PlayerHand : Hand
         Cards.CollectionChanged += UpdateValue;
     }
 
-    public Option[] GetTurnOptions(Player owner)
+    public IEnumerable<Option> GetTurnOptions(Player owner)
     {
         var turnOptions = new List<Option>()
         {
@@ -35,7 +36,7 @@ public sealed class PlayerHand : Hand
             turnOptions.Add(new Option("Surrender", Surrender));
         }
 
-        return turnOptions.ToArray();
+        return turnOptions;
     }
 
     private void Hit(Player owner)
@@ -53,20 +54,21 @@ public sealed class PlayerHand : Hand
         owner.Winnings -= Bet;
         Bet *= 2;
 
-        this.DealCard(Dealer.Deck, !GameManager.DoubledDownCardsAreHidden);
+        this.DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
 
         State = HandState.DoubledDown;
     }
 
     private void Split(Player owner)
     {
+        State = HandState.Split;
+        
         owner.Winnings -= Bet;
 
         var newHand = new PlayerHand(Bet);
+
         newHand.Cards.Add(Cards[1]);
         Cards.RemoveAt(1);
-
-        State = HandState.Split;
 
         owner.Hands.Add(newHand);
     }

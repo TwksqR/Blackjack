@@ -30,7 +30,7 @@ public static class ConsoleUI
         Console.CursorVisible = false;
 
         int left = Console.CursorLeft;
-        int top = Console.CursorTop;
+        int top = Console.CursorTop + 1;
 
         int selectedOptionIndex = 0;
 
