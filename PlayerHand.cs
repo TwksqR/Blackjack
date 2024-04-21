@@ -80,7 +80,7 @@ public sealed class PlayerHand : Hand
         State = HandState.Surrendered;
     }
 
-    public Option[] GetInsuranceOptions()
+    public IEnumerable<Option> GetInsuranceOptions()
     {
         return new Option[]
         {
