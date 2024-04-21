@@ -100,11 +100,13 @@ public static class GameManager
             13,
             1,
             10,
-            13,
-            11,
-            10,
-            12,
-            10,
+            7,
+            5,
+            4,
+            9,
+            1,
+            3,
+            2,
             6,
             1
         };
@@ -518,6 +520,10 @@ public static class GameManager
                             hand.DealCard(Dealer.Deck, true);
                             continue;
                         }
+                        else if ((hand.Cards.Count >= 5) && Settings.FiveCardCharlieIsEnabled)
+                        {
+                            break;
+                        }
 
                         Console.Clear();
 
@@ -533,6 +539,31 @@ public static class GameManager
                     if ((hand.State == HandState.Stood) || (hand.State == HandState.DoubledDown))
                     {
                         i++;
+                    }
+
+                    if ((hand.Cards.Count >= 5) && Settings.FiveCardCharlieIsEnabled)
+                    {
+                        player.Winnings += hand.Bet * 2;
+
+                        Console.Clear();
+            
+                        Console.WriteLine($"\n{Dealer.Hand.GetCardShortNames()}");
+                        ConsoleUI.WriteColoredLine(Dealer.Hand.Value, ConsoleColor.Red);
+
+                        Console.WriteLine($"\n{hand.GetCardShortNames()}");
+                        ConsoleUI.WriteColoredLine(hand.Value, ConsoleColor.Green);
+                        ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
+
+                        ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
+                        ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (+{string.Format("{0:C}", hand.Bet * 2)})", ConsoleColor.Green);
+
+                        ConsoleUI.WriteColoredLine($"\nWin (Five-Card Charlie)", ConsoleColor.Green);
+
+                        ConsoleUI.DisplayButtonPressEnter();
+
+                        player.Hands.Remove(hand);
+
+                        continue;
                     }
 
                     Console.Clear();
