@@ -94,6 +94,7 @@ public static class GameManager
         // NOTE: Comment to play with unshuffled deck
         Dealer.ShuffleDeck(Dealer.Deck);
 
+        /*
         Dealer.Deck.Insert(0, new(13, Suit.Spades));
         Dealer.Deck.Insert(0, new(1, Suit.Spades));
         Dealer.Deck.Insert(0, new(10, Suit.Spades));
@@ -104,6 +105,7 @@ public static class GameManager
         Dealer.Deck.Insert(0, new(10, Suit.Spades));
         Dealer.Deck.Insert(0, new(6, Suit.Spades));
         Dealer.Deck.Insert(0, new(1, Suit.Spades));
+        */
 
         do
         {
