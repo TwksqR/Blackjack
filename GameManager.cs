@@ -92,21 +92,25 @@ public static class GameManager
 
         int roundNumber = 0;
 
-        // NOTE: Comment to play with unshuffled deck
+        // Comment to play with unshuffled deck
         Dealer.ShuffleDeck(Dealer.Deck);
 
-        /*
-        Dealer.Deck.Insert(0, new(13, Suit.Spades));
-        Dealer.Deck.Insert(0, new(1, Suit.Spades));
-        Dealer.Deck.Insert(0, new(10, Suit.Spades));
-        Dealer.Deck.Insert(0, new(13, Suit.Spades));
-        Dealer.Deck.Insert(0, new(11, Suit.Spades));
-        Dealer.Deck.Insert(0, new(10, Suit.Spades));
-        Dealer.Deck.Insert(0, new(12, Suit.Spades));
-        Dealer.Deck.Insert(0, new(10, Suit.Spades));
-        Dealer.Deck.Insert(0, new(6, Suit.Spades));
-        Dealer.Deck.Insert(0, new(1, Suit.Spades));
-        */
+        var cardValues = new int[]
+        {
+            13,
+            1,
+            10,
+            13,
+            11,
+            10,
+            12,
+            10,
+            6,
+            1
+        };
+
+        // Uncomment to customize starting cards
+        // Settings.InsertStartingCards(Dealer.Deck, cardValues);
 
         do
         {
@@ -237,6 +241,8 @@ public static class GameManager
 
                     if (selectedInsuranceOption.Name == "Yes")
                     {
+                        Console.Clear();
+
                         DisplayHands(hand, player);
 
                         Thread.Sleep(2000);
@@ -386,7 +392,7 @@ public static class GameManager
                         ConsoleUI.WriteColoredLine($"(-{string.Format("{0:C}", hand.InsuranceBet)} insurance)", ConsoleColor.Red);
 
                         ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
-                        ConsoleUI.WriteColoredLine($"-({string.Format("{0:C}", hand.InsuranceBet)} insurance)", ConsoleColor.Red);
+                        ConsoleUI.WriteColoredLine(string.Format("{0:C}", player.Winnings), ConsoleColor.DarkGray);
 
                         ConsoleUI.DisplayButtonPressEnter();
                     }
@@ -578,15 +584,6 @@ public static class GameManager
                 player.Hands.Remove(hand);
 
                 break;
-
-            // Only possible when split hands can be blackjack
-            // NOTE: This may need to be refactored since the code for the split hands being blackjack rule has not been implemented yet
-            case HandState.Blackjack:
-                ConsoleUI.WriteColoredLine("\nBlackjack!", ConsoleColor.Green);
-
-                player.Hands.Remove(hand);
-                break;
-
         }
     }
 

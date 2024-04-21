@@ -14,4 +14,12 @@ internal static class Settings
     internal static readonly int MaxBet = 50;
 
     internal static bool DoubledDownCardsAreHidden { get; } = true;
+
+    internal static void InsertCards(this IList<Card> deck, IEnumerable<int> cardValues)
+    {
+        foreach (int cardValue in cardValues)
+        {
+            deck.Insert(0, new(cardValue, Suit.Spades));
+        }
+    }
 }
