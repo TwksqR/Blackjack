@@ -1,6 +1,6 @@
 namespace Twksqr.Blackjack;
 
-public enum HandState
+public enum HandStatus
 {
     Active,
     Stood,

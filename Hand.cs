@@ -1,8 +1,6 @@
 namespace Twksqr.Blackjack;
 
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Runtime.InteropServices;
 
 public class Hand
 {
@@ -19,7 +17,7 @@ public class Hand
         protected set { _value = value; }
     }
 
-    public HandState State { get; protected set; } = HandState.Active;
+    public HandStatus Status { get; protected set; } = HandStatus.Active;
 
     public Hand()
     {
@@ -48,7 +46,7 @@ public class Hand
 
             if (aceWorthEleven == null)
             {
-                State = HandState.Busted;
+                Status = HandStatus.Busted;
                 return;
             }
 
@@ -58,7 +56,7 @@ public class Hand
 
         if (Value == 21)
         {
-            State = ((Cards.Count == 2) && (State != HandState.Split)) ? HandState.Blackjack : HandState.Stood;
+            Status = ((Cards.Count == 2) && (Status != HandStatus.Split)) ? HandStatus.Blackjack : HandStatus.Stood;
         }
     }
 
@@ -70,6 +68,6 @@ public class Hand
     public void Reset()
     {
         Cards.Clear();
-        State = HandState.Active;
+        Status = HandStatus.Active;
     }
 }

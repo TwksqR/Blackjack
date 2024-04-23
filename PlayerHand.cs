@@ -3,10 +3,10 @@ namespace Twksqr.Blackjack;
 
 public sealed class PlayerHand : Hand
 {
-    public decimal Bet { get; set; }
+    public int Bet { get; set; }
     public decimal InsuranceBet { get; set; }
 
-    public PlayerHand(decimal bet)
+    public PlayerHand(int bet)
     {
         Bet = bet;
     }
@@ -39,12 +39,12 @@ public sealed class PlayerHand : Hand
 
     private void Hit(Player owner)
     {
-        this.DealCard(Dealer.Deck, true);
+        Cards.DealCard(Dealer.Deck, true);
     }
 
     public void Stand(Player owner)
     {
-        State = HandState.Stood;
+        Status = HandStatus.Stood;
     }
 
     private void DoubleDown(Player owner)
@@ -52,21 +52,22 @@ public sealed class PlayerHand : Hand
         owner.Winnings -= Bet;
         Bet *= 2;
 
-        this.DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
+        Cards.DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
 
-        State = HandState.DoubledDown;
+        Status = HandStatus.DoubledDown;
     }
 
     private void Split(Player owner)
-    {
-        State = HandState.Split;
-        
+    {   
         owner.Winnings -= Bet;
 
         var newHand = new PlayerHand(Bet);
 
         newHand.Cards.Add(Cards[1]);
         Cards.RemoveAt(1);
+
+        Status = HandStatus.Split;
+        newHand.Status = HandStatus.Split;
 
         owner.Hands.Add(newHand);
     }
@@ -75,7 +76,7 @@ public sealed class PlayerHand : Hand
     {
         owner.Winnings += Bet / 2m;
 
-        State = HandState.Surrendered;
+        Status = HandStatus.Surrendered;
     }
 
     public IEnumerable<Option> GetInsuranceOptions()

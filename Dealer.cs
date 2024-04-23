@@ -42,14 +42,36 @@ public static class Dealer
         Console.WriteLine("\nReshuffling deck. (A reshuffle occurs when there are 234 or less cards in the deck)");
     }
 
-    public static void DealCard(this Hand hand, IList<Card> deck, bool dealtCardIsFaceUp)
+    public static void DealCard(this IList<Card> newCollection, IList<Card> oldCollection, bool dealtCardIsFaceUp)
     {
-        Card dealtCard = deck[0];
-        deck.RemoveAt(0);
+        Card dealtCard = oldCollection[^1];
+        oldCollection.Remove(dealtCard);
 
         dealtCard.IsFaceUp = dealtCardIsFaceUp;
 
-        hand.Cards.Add(dealtCard);
+        newCollection.Add(dealtCard);
+    }
+
+    public static void AddStartingCards(this IList<Card> collection)
+    {
+        var cardValues = new int[]
+        {
+            13,
+            1,
+            10,
+            13,
+            1,
+            1,
+            12,
+            10,
+            6,
+            1
+        };
+
+        foreach (int cardValue in cardValues)
+        {
+            collection.Add(new(cardValue, Suit.Spades));
+        }
     }
 
     public static void ResolveHand()
@@ -76,17 +98,17 @@ public static class Dealer
 
         while (Hand.Value < 17)
         {
-            Hand.DealCard(Deck, true);
+            Hand.Cards.DealCard(Deck, true);
 
             Console.Clear();
 
-            ConsoleColor dealerHandColor = (Hand.State == HandState.Busted) ? bustedDealerHandColor : regularDealerHandColor;
+            ConsoleColor dealerHandColor = (Hand.Status == HandStatus.Busted) ? bustedDealerHandColor : regularDealerHandColor;
 
             ConsoleUI.WriteColoredLine("Resolving dealer's hand...", ConsoleColor.Cyan);
             Console.WriteLine($"\n{Hand.GetCardShortNames()}");
             ConsoleUI.WriteColoredLine(Hand.Value, dealerHandColor);
 
-            if (Hand.State == HandState.Busted)
+            if (Hand.Status == HandStatus.Busted)
             {
                 ConsoleUI.WriteColoredLine("\nBust", ConsoleColor.Red);
             }
