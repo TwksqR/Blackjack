@@ -9,8 +9,6 @@ public sealed class PlayerHand : Hand
     public PlayerHand(decimal bet)
     {
         Bet = bet;
-
-        Cards.CollectionChanged += UpdateValue;
     }
 
     public IEnumerable<Option> GetTurnOptions(Player owner)
