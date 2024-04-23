@@ -7,6 +7,6 @@ public enum HandStatus
     Busted,
     Blackjack,
     Split,
-    DoubledDown,
+    DoubledDown, // May be unnecessary
     Surrendered
 }

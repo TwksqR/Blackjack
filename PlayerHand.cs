@@ -3,10 +3,10 @@ namespace Twksqr.Blackjack;
 
 public sealed class PlayerHand : Hand
 {
-    public int Bet { get; set; }
+    public decimal Bet { get; set; }
     public decimal InsuranceBet { get; set; }
 
-    public PlayerHand(int bet)
+    public PlayerHand(decimal bet)
     {
         Bet = bet;
     }
@@ -63,8 +63,7 @@ public sealed class PlayerHand : Hand
 
         var newHand = new PlayerHand(Bet);
 
-        newHand.Cards.Add(Cards[1]);
-        Cards.RemoveAt(1);
+        newHand.Cards.DealCard(Cards, true);
 
         Status = HandStatus.Split;
         newHand.Status = HandStatus.Split;
