@@ -510,6 +510,31 @@ public static class GameManager
                         selectedTurnOption.Action(player);
                     }
 
+                    if (hand.Status == HandStatus.FiveCardCharlie)
+                    {
+                        player.Winnings += hand.Bet * 2;
+
+                        Console.Clear();
+            
+                        Console.WriteLine($"\n{Dealer.Hand.GetCardShortNames()}");
+                        ConsoleUI.WriteColoredLine(Dealer.Hand.Value, ConsoleColor.Red);
+
+                        Console.WriteLine($"\n{hand.GetCardShortNames()}");
+                        ConsoleUI.WriteColoredLine(hand.Value, ConsoleColor.Green);
+                        ConsoleUI.WriteColoredLine(string.Format("{0:C}", hand.Bet), ConsoleColor.DarkGray);
+
+                        ConsoleUI.WriteColoredLine($"\n{player.Name}", ConsoleColor.Cyan);
+                        ConsoleUI.WriteColoredLine($"{string.Format("{0:C}", player.Winnings)} (+{string.Format("{0:C}", hand.Bet * 2)})", ConsoleColor.Green);
+
+                        ConsoleUI.WriteColoredLine($"\nWin (Five-Card Charlie)", ConsoleColor.Green);
+
+                        ConsoleUI.DisplayButtonPressEnter();
+
+                        player.Hands.Remove(hand);
+
+                        continue;
+                    }
+
                     if ((hand.Status == HandStatus.Stood) || (hand.Status == HandStatus.DoubledDown) || (hand.Status == HandStatus.Blackjack))
                     {
                         i++;

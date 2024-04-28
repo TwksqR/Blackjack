@@ -8,5 +8,6 @@ public enum HandStatus
     Blackjack,
     Split,
     DoubledDown, // May be unnecessary
-    Surrendered
+    Surrendered,
+    FiveCardCharlie
 }
