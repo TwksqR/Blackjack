@@ -1,73 +1,156 @@
 namespace Twksqr.Blackjack;
 
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
+// https://stackoverflow.com/a/54565283
 public class Hand
 {
-    public ObservableCollection<Card> Cards { get; } = new();
+    protected readonly ObservableCollection<Card> _cards = new();
     
     private int _value;
     public int Value
     {
         get
         {
-            return _value - Cards.Where(card => !card.IsFaceUp).Sum(card => card.Value);
+            return (AllCardsAreFaceUp) ? _value : _visibleValue;
         }
-
-        protected set { _value = value; }
+         
+        private set
+        {
+            _value = value;
+        }
     }
+
+    private int _visibleValue;
+
+    public bool AllCardsAreFaceUp { get; private set; } = true;
 
     public HandStatus Status { get; protected set; } = HandStatus.Active;
 
+    public event PropertyChangedEventHandler ItemPropertyChanged;
+
     public Hand()
     {
-        Cards.CollectionChanged += UpdateValue;
+        _cards.CollectionChanged += UpdateValue;
+        ItemPropertyChanged += CheckAllCardsAreFaceUp;
     }
 
-    public void UpdateValue(object? sender, EventArgs e)
+    protected virtual void UpdateValue(object? sender, EventArgs e)
     {
-        Value = Cards.Sum(card => card.Value);
+        Value = GetUpdatedValue(_cards);
+        _visibleValue = GetUpdatedValue(_cards.Where(card => card.IsFaceUp));
+    }
 
-        if (Value <= 11)
+    protected virtual int GetUpdatedValue(IEnumerable<Card> cards)
+    {
+        int value = cards.Sum(card => card.Value);
+
+        if (value <= 11)
         {
-            Card? aceWorthOne = Cards.FirstOrDefault(card => card.Value == 1);
-
-            if (aceWorthOne == null)
+            if (!cards.Any(card => card.Value == 1))
             {
-                return;
-            }
-            
-            aceWorthOne.Value = 11;
-            Value += 10;
-        }
-        else if (Value > 21)
-        {
-            Card? aceWorthEleven = Cards.FirstOrDefault(card => card.Value == 11);
-
-            if (aceWorthEleven == null)
-            {
-                Status = HandStatus.Busted;
-                return;
+                return value;
             }
 
-            aceWorthEleven.Value = 1;
-            Value -= 10;
+            value += 10;
+        }
+        else if (value > 21)
+        {
+            Status = HandStatus.Busted;
+            return value;
         }
 
-        if (Value == 21)
+        if (value == 21)
         {
-            Status = ((Cards.Count == 2) && (Status != HandStatus.Split)) ? HandStatus.Blackjack : HandStatus.Stood;
+            Status = ((cards.Count() == 2) && (Status != HandStatus.Split)) ? HandStatus.Blackjack : HandStatus.Stood;
         }
+
+        return value;
+    }
+
+    // Erroneous method name, but what else is there?
+    private void CheckAllCardsAreFaceUp(object? sender, EventArgs e)
+    {
+        AllCardsAreFaceUp = _cards.All(card => card.IsFaceUp);
+    }
+
+    public void DealCard(IList<Card> oldCollection, bool dealtCardIsFaceUp)
+    {
+        Card dealtCard = oldCollection[^1];
+        oldCollection.Remove(dealtCard);
+
+        dealtCard.IsFaceUp = dealtCardIsFaceUp;
+
+        Add(dealtCard);
     }
 
     public string GetCardShortNames()
     {
-        return string.Join(' ', Cards.Select(card => card.ShortName));
+        return string.Join(' ', _cards.Select(card => card.ShortName));
     }
 
-    public void Reset()
+    private void NotifyItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        Cards.Clear();
+        ItemPropertyChanged?.Invoke(sender, e);
+    }
+
+    public void Add(Card item)
+    {
+        item.PropertyChanged += NotifyItemPropertyChanged;
+        _cards.Add(item);
+    }
+
+    public void Clear()
+    {
+        foreach (var card in _cards)
+        {
+            card.PropertyChanged -= NotifyItemPropertyChanged;
+        }
+
+        _cards.Clear();
+
         Status = HandStatus.Active;
+    }
+
+    public int Count => _cards.Count;
+
+    public bool Contains(Card item)
+    {
+        return _cards.Contains(item);
+    }
+
+    public bool Remove(Card item)
+    {
+        item.PropertyChanged -= NotifyItemPropertyChanged;
+        return _cards.Remove(item);
+    }
+
+    public int IndexOf(Card item)
+    {
+        return _cards.IndexOf(item);
+    }
+
+    public void Insert(int index, Card item)
+    {
+        item.PropertyChanged += NotifyItemPropertyChanged;
+        _cards.Insert(index, item);
+    }
+
+    public void RemoveAt(int index)
+    {
+        if (index < 0 || index >= Count)
+        {
+            throw new ArgumentOutOfRangeException(nameof(index));
+        }
+
+        _cards[index].PropertyChanged -= NotifyItemPropertyChanged;
+        _cards.RemoveAt(index);
+    }
+
+    public Card this[int index]
+    {
+        get => _cards[index];
+        set => _cards[index] = value;
     }
 }
