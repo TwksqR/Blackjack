@@ -52,19 +52,15 @@ public static class Dealer
         newCollection.Add(dealtCard);
     }
 
-    public static void AddStartingCards(this IList<Card> collection)
+    public static void AddDebugCards(this IList<Card> collection)
     {
         var cardValues = new int[]
         {
             13,
-            1,
             10,
-            13,
             1,
             1,
-            12,
-            10,
-            6,
+            1,
             1
         };
 

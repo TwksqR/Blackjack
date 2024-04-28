@@ -91,11 +91,9 @@ public static class GameManager
 
         int roundNumber = 0;
 
-        // Comment to play with unshuffled deck
         Dealer.ShuffleDeck(Dealer.Deck);
 
-        // Uncomment to customize starting cards
-        Dealer.Deck.AddStartingCards();
+        // Dealer.Deck.AddDebugCards();
 
         do
         {
