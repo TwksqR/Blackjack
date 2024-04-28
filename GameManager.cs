@@ -194,18 +194,18 @@ public static class GameManager
 
         Thread.Sleep(2000);
 
-        Dealer.Hand.Reset();
+        Dealer.Hand.Clear();
 
-        Dealer.Hand.Cards.DealCard(Dealer.Deck, false);
-        Dealer.Hand.Cards.DealCard(Dealer.Deck, true);
+        Dealer.Hand.DealCard(Dealer.Deck, false);
+        Dealer.Hand.DealCard(Dealer.Deck, true);
 
         GetPlayerBets();
 
         Console.CursorVisible = false;
 
-        if (Dealer.Hand.Cards[1].Value >= 10)
+        if ((Dealer.Hand[1].Value >= 10) || (Dealer.Hand[1].Rank == 1)) // A bit crude but it works
         {
-            if (Dealer.Hand.Cards[1].Value == 11) // if (Dealer.Hand.Cards[1].Rank == 1)
+            if (Dealer.Hand[1].Rank == 1)
             {
                 foreach (var player in _players)
                 {
@@ -243,7 +243,7 @@ public static class GameManager
 
             Console.Clear();
 
-            Dealer.Hand.Cards[0].IsFaceUp = true;
+            Dealer.Hand[0].IsFaceUp = true;
             // Dealer.Hand.UpdateValue(null, EventArgs.Empty);
 
             if (Dealer.Hand.Status == HandStatus.Blackjack)
@@ -349,12 +349,11 @@ public static class GameManager
             }
             else
             {
-                Dealer.Hand.Cards[0].IsFaceUp = false;
+                Dealer.Hand[0].IsFaceUp = false;
 
                 ConsoleUI.WriteColoredLine("Dealer does not have Blackjack.", ConsoleColor.White);
 
                 Console.WriteLine($"\n{Dealer.Hand.GetCardShortNames()}");
-                ConsoleUI.WriteColoredLine(Dealer.Hand.Value, ConsoleColor.Magenta);
 
                 Thread.Sleep(2000);
 
@@ -367,7 +366,6 @@ public static class GameManager
                     if (hand.InsuranceBet > 0)
                     {
                         Console.WriteLine($"\n{Dealer.Hand.GetCardShortNames()}");
-                        ConsoleUI.WriteColoredLine(Dealer.Hand.Value, ConsoleColor.Magenta);
 
                         Console.WriteLine($"\n{hand.GetCardShortNames()}");
                         ConsoleUI.WriteColoredLine(hand.Value, ConsoleColor.Magenta);
@@ -478,8 +476,8 @@ public static class GameManager
 
                 var hand = new PlayerHand(playerBet);
 
-                hand.Cards.DealCard(Dealer.Deck, true);
-                hand.Cards.DealCard(Dealer.Deck, true);
+                hand.DealCard(Dealer.Deck, true);
+                hand.DealCard(Dealer.Deck, true);
 
                 player.Hands.Add(hand);
             }
@@ -495,9 +493,9 @@ public static class GameManager
 					
                     while ((hand.Status == HandStatus.Active) || (hand.Status == HandStatus.Split))
                     {
-                        if (hand.Cards.Count < 2)
+                        if (hand.Count < 2)
                         {
-                            hand.Cards.DealCard(Dealer.Deck, true);
+                            hand.DealCard(Dealer.Deck, true);
                             continue;
                         }
 
@@ -585,8 +583,8 @@ public static class GameManager
 
             Thread.Sleep(2000);
 
-            hand.Cards[^1].IsFaceUp = true;
-            //hand.UpdateValue(null, EventArgs.Empty);
+            hand[^1].IsFaceUp = true;
+            // hand.UpdateValue(null, EventArgs.Empty);
 
             Console.Clear();
 
@@ -602,8 +600,6 @@ public static class GameManager
                 ConsoleUI.WriteColoredLine(string.Format("{0:C}", player.Winnings), ConsoleColor.Red);
 
                 ConsoleUI.WriteColoredLine("\nBust", ConsoleColor.Red);
-
-                hand.Bet = 0;
 
                 return;
             }
@@ -635,9 +631,7 @@ public static class GameManager
 
             playerHandResult = "Win";
 
-            hand.Bet *= 2;
-
-            player.Winnings += hand.Bet;
+            player.Winnings += hand.Bet * 2;
         }
         else if (hand.Value < Dealer.Hand.Value)
         {
@@ -645,8 +639,6 @@ public static class GameManager
             playerColor = loseColor;
 
             playerHandResult = "Lose";
-
-            hand.Bet = 0;
         }
         else
         {

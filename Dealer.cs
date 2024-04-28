@@ -42,16 +42,6 @@ public static class Dealer
         Console.WriteLine("\nReshuffling deck. (A reshuffle occurs when there are 234 or less cards in the deck)");
     }
 
-    public static void DealCard(this IList<Card> newCollection, IList<Card> oldCollection, bool dealtCardIsFaceUp)
-    {
-        Card dealtCard = oldCollection[^1];
-        oldCollection.Remove(dealtCard);
-
-        dealtCard.IsFaceUp = dealtCardIsFaceUp;
-
-        newCollection.Add(dealtCard);
-    }
-
     public static void AddDebugCards(this IList<Card> collection)
     {
         var cardValues = new int[]
@@ -78,7 +68,8 @@ public static class Dealer
 
         Thread.Sleep(2000);
 
-        Hand.Cards[0].IsFaceUp = true;
+        Hand[0].IsFaceUp = true;
+        // Hand.UpdateValue(null, EventArgs.Empty);
 
         Console.Clear();
 
@@ -94,7 +85,7 @@ public static class Dealer
 
         while (Hand.Value < 17)
         {
-            Hand.Cards.DealCard(Deck, true);
+            Hand.DealCard(Deck, true);
 
             Console.Clear();
 

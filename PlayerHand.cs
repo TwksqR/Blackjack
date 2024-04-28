@@ -3,8 +3,8 @@ namespace Twksqr.Blackjack;
 
 public sealed class PlayerHand : Hand
 {
-    public decimal Bet { get; set; }
-    public decimal InsuranceBet { get; set; }
+    public decimal Bet { get; private set; }
+    public decimal InsuranceBet { get; private set; }
 
     public PlayerHand(decimal bet)
     {
@@ -19,13 +19,13 @@ public sealed class PlayerHand : Hand
             new("Stand", Stand)
         };
 
-        if (Cards.Count == 2)
+        if (_cards.Count == 2)
         {
             if (owner.Winnings >= Bet)
             {
                 turnOptions.Add(new Option("Double Down", DoubleDown));
 
-                if (((Cards[0].Rank == Cards[1].Rank) || (Cards[0].Value == Cards[1].Value)) && (owner.Hands.Count < 4))
+                if (((_cards[0].Rank == _cards[1].Rank) || (_cards[0].Value == _cards[1].Value)) && (owner.Hands.Count < 4))
                 {
                     turnOptions.Add(new Option("Split", Split));
                 }
@@ -39,7 +39,7 @@ public sealed class PlayerHand : Hand
 
     private void Hit(Player owner)
     {
-        Cards.DealCard(Dealer.Deck, true);
+        DealCard(Dealer.Deck, true);
     }
 
     public void Stand(Player owner)
@@ -52,7 +52,7 @@ public sealed class PlayerHand : Hand
         owner.Winnings -= Bet;
         Bet *= 2;
 
-        Cards.DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
+        DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
 
         Status = HandStatus.DoubledDown;
     }
@@ -63,7 +63,7 @@ public sealed class PlayerHand : Hand
 
         var newHand = new PlayerHand(Bet);
 
-        newHand.Cards.DealCard(Cards, true);
+        newHand.DealCard(_cards, true);
 
         Status = HandStatus.Split;
         newHand.Status = HandStatus.Split;
