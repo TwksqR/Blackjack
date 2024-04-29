@@ -132,6 +132,7 @@ public class Hand
 
     public void Insert(int index, Card item)
     {
+        item.PropertyChanged += NotifyCardPropertyChanged;
         _cards.Insert(index, item);
     }
 
