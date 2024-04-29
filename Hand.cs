@@ -9,6 +9,7 @@ public class Hand
     protected readonly ObservableCollection<Card> _cards = new();
     
     private int _value;
+    private int _visibleValue;
     public int Value
     {
         get
@@ -21,8 +22,6 @@ public class Hand
             _value = value;
         }
     }
-
-    private int _visibleValue;
 
     public bool AllCardsAreFaceUp { get; private set; } = true;
 
