@@ -28,12 +28,12 @@ public class Hand
 
     public HandStatus Status { get; protected set; } = HandStatus.Active;
 
-    public event PropertyChangedEventHandler ItemPropertyChanged;
+    public event PropertyChangedEventHandler CardPropertyChanged;
 
     public Hand()
     {
         _cards.CollectionChanged += UpdateValue;
-        ItemPropertyChanged += CheckAllCardsAreFaceUp;
+        CardPropertyChanged += CheckAllCardsAreFaceUp;
     }
 
     protected virtual void UpdateValue(object? sender, EventArgs e)
@@ -90,14 +90,14 @@ public class Hand
         return string.Join(' ', _cards.Select(card => card.ShortName));
     }
 
-    private void NotifyItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void NotifyCardPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        ItemPropertyChanged?.Invoke(sender, e);
+        CardPropertyChanged?.Invoke(sender, e);
     }
 
     public void Add(Card item)
     {
-        item.PropertyChanged += NotifyItemPropertyChanged;
+        item.PropertyChanged += NotifyCardPropertyChanged;
         _cards.Add(item);
     }
 
@@ -105,7 +105,7 @@ public class Hand
     {
         foreach (var card in _cards)
         {
-            card.PropertyChanged -= NotifyItemPropertyChanged;
+            card.PropertyChanged -= NotifyCardPropertyChanged;
         }
 
         _cards.Clear();
@@ -122,7 +122,7 @@ public class Hand
 
     public bool Remove(Card item)
     {
-        item.PropertyChanged -= NotifyItemPropertyChanged;
+        item.PropertyChanged -= NotifyCardPropertyChanged;
         return _cards.Remove(item);
     }
 
@@ -133,7 +133,6 @@ public class Hand
 
     public void Insert(int index, Card item)
     {
-        item.PropertyChanged += NotifyItemPropertyChanged;
         _cards.Insert(index, item);
     }
 
@@ -144,7 +143,7 @@ public class Hand
             throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        _cards[index].PropertyChanged -= NotifyItemPropertyChanged;
+        _cards[index].PropertyChanged -= NotifyCardPropertyChanged;
         _cards.RemoveAt(index);
     }
 
