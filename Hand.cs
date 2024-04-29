@@ -23,7 +23,7 @@ public class Hand
         }
     }
 
-    public bool AllCardsAreFaceUp { get; private set; } = true;
+    public bool AllCardsAreFaceUp { get; private set; }
 
     public HandStatus Status { get; protected set; } = HandStatus.Active;
 
@@ -31,8 +31,13 @@ public class Hand
 
     public Hand()
     {
+        _cards.CollectionChanged += CheckAllCardsAreFaceUp;
         _cards.CollectionChanged += UpdateValue;
+
         CardPropertyChanged += CheckAllCardsAreFaceUp;
+
+        // Redundant as there can only ever be one face-down card maximum; the difference in value would be _value and _visibleValue
+        // CardPropertyChanged += UpdateValue;
     }
 
     protected virtual void UpdateValue(object? sender, EventArgs e)
