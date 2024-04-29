@@ -46,12 +46,7 @@ public static class Dealer
     {
         var cardValues = new int[]
         {
-            13,
-            10,
-            1,
-            1,
-            1,
-            1
+            
         };
 
         foreach (int cardValue in cardValues)
