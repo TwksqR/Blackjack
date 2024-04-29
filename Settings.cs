@@ -14,4 +14,5 @@ internal static class Settings
     internal static readonly int MaxBet = 50;
 
     internal static readonly bool DoubledDownCardsAreHidden = true;
+    internal static readonly bool FiveCardCharlieIsEnabled = true;
 }

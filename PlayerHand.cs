@@ -9,6 +9,11 @@ public sealed class PlayerHand : Hand
     public PlayerHand(decimal bet)
     {
         Bet = bet;
+
+        if (Settings.FiveCardCharlieIsEnabled)
+        {
+            _cards.CollectionChanged += CheckFiveChardCharlie;
+        }
     }
 
     public IEnumerable<Option> GetTurnOptions(Player owner)
@@ -94,5 +99,13 @@ public sealed class PlayerHand : Hand
         }
 
         void IgnoreInsurance(Player player) {}
+    }
+
+    public void CheckFiveChardCharlie(object? sender, EventArgs e)
+    {
+        if ((Count >= 5) && (Value <= 21))
+        {
+            Status = HandStatus.FiveCardCharlie;
+        }
     }
 }
