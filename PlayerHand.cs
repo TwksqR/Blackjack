@@ -40,47 +40,47 @@ public sealed class PlayerHand : Hand
         }
 
         return turnOptions;
-    }
 
-    private void Hit(Player owner)
-    {
-        DealCard(Dealer.Deck, true);
-    }
+        void Hit(Player owner)
+        {
+            DealCard(Dealer.Deck, true);
+        }
 
-    public void Stand(Player owner)
-    {
-        Status = HandStatus.Stood;
-    }
+        void Stand(Player owner)
+        {
+            Status = HandStatus.Stood;
+        }
 
-    private void DoubleDown(Player owner)
-    {
-        owner.Winnings -= Bet;
-        Bet *= 2;
+        void DoubleDown(Player owner)
+        {
+            owner.Winnings -= Bet;
+            Bet *= 2;
 
-        DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
+            DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
 
-        Status = HandStatus.DoubledDown;
-    }
+            Status = HandStatus.DoubledDown;
+        }
 
-    private void Split(Player owner)
-    {   
-        owner.Winnings -= Bet;
+        void Split(Player owner)
+        {   
+            owner.Winnings -= Bet;
 
-        var newHand = new PlayerHand(Bet);
+            var newHand = new PlayerHand(Bet);
 
-        newHand.DealCard(_cards, true);
+            newHand.DealCard(_cards, true);
 
-        Status = HandStatus.Split;
-        newHand.Status = HandStatus.Split;
+            Status = HandStatus.Split;
+            newHand.Status = HandStatus.Split;
 
-        owner.Hands.Add(newHand);
-    }
+            owner.Hands.Add(newHand);
+        }
 
-    private void Surrender(Player owner)
-    {
-        owner.Winnings += Bet / 2m;
+        void Surrender(Player owner)
+        {
+            owner.Winnings += Bet / 2m;
 
-        Status = HandStatus.Surrendered;
+            Status = HandStatus.Surrendered;
+        }
     }
 
     public IEnumerable<Option> GetInsuranceOptions()
