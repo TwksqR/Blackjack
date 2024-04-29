@@ -244,7 +244,6 @@ public static class GameManager
             Console.Clear();
 
             Dealer.Hand[0].IsFaceUp = true;
-            // Dealer.Hand.UpdateValue(null, EventArgs.Empty);
 
             if (Dealer.Hand.Status == HandStatus.Blackjack)
             {
@@ -609,7 +608,6 @@ public static class GameManager
             Thread.Sleep(2000);
 
             hand[^1].IsFaceUp = true;
-            // hand.UpdateValue(null, EventArgs.Empty);
 
             Console.Clear();
 

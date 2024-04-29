@@ -69,7 +69,6 @@ public static class Dealer
         Thread.Sleep(2000);
 
         Hand[0].IsFaceUp = true;
-        // Hand.UpdateValue(null, EventArgs.Empty);
 
         Console.Clear();
 
