@@ -12,7 +12,9 @@ public static class GameManager
         Console.CursorVisible = false;
 
         ConsoleUI.WriteColoredLine("Blackjack Simulator", ConsoleColor.Magenta);
-        ConsoleUI.WriteColoredLine("v0.1.0-alpha", ConsoleColor.DarkGray);
+        ConsoleUI.WriteColoredLine("Alpha 2.1.6.0", ConsoleColor.DarkGray);
+        ConsoleUI.WriteColoredLine("Release date: 2024.04.28", ConsoleColor.DarkGray);
+
         ConsoleUI.WriteColoredLine("\nMade by TwksqR\nDiscord: twskqr\nReddit: u/GD_Stalker", ConsoleColor.Cyan);
 
         ConsoleUI.DisplayButton("Let's play!");
