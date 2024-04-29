@@ -20,7 +20,7 @@ public static class GameManager
         StartGame();
     }
 
-    public static void StartGame()
+    private static void StartGame()
     {
         int playerCount = GetPlayerCount();
 
@@ -177,7 +177,7 @@ public static class GameManager
         Thread.Sleep(2000);
     }
 
-    public static void PlayRound(int roundNumber)
+    private static void PlayRound(int roundNumber)
     {
         Console.Clear();
 
@@ -550,7 +550,7 @@ public static class GameManager
         }
     }
 
-    public static void DisplayHands(PlayerHand hand, Player player)
+    private static void DisplayHands(PlayerHand hand, Player player)
     {
         ConsoleColor playerColor = (hand.Status == HandStatus.Busted) ? ConsoleColor.Red : ConsoleColor.Magenta;
 
@@ -592,7 +592,7 @@ public static class GameManager
         }
     }
 
-    public static void DisplayHandSettlement(PlayerHand hand, Player player)
+    private static void DisplayHandSettlement(PlayerHand hand, Player player)
     {
         if (Settings.DoubledDownCardsAreHidden && (hand.Status == HandStatus.DoubledDown))
         {
@@ -683,7 +683,7 @@ public static class GameManager
         ConsoleUI.WriteColoredLine($"\n{playerHandResult}", playerColor);
     }
 
-    public static Option DisplayMenu(this IEnumerable<Option> options, int left, int top)
+    private static Option DisplayMenu(this IEnumerable<Option> options, int left, int top)
     {
         var optionNames = options.Select(option => option.Name);
         
