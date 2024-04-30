@@ -75,6 +75,11 @@ public class Hand
 
     public void DealCard(IList<Card> oldCollection, bool dealtCardIsVisible)
     {
+        if (oldCollection.Count < 1)
+        {
+            return;
+        }
+        
         Card dealtCard = oldCollection[^1];
         oldCollection.Remove(dealtCard);
 
