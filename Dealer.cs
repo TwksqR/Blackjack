@@ -48,8 +48,8 @@ public static class Dealer
         {
             10,
             2,
-            11,
-            7,
+            1,
+            6,
             3,
             9,
             5,

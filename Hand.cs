@@ -14,7 +14,7 @@ public class Hand
     {
         get
         {
-            return (_visibleCards.Count == _cards.Count) ? _value : _visibleValue;
+            return _visibleValue;
         }
     }
 
@@ -24,7 +24,7 @@ public class Hand
     {
         get
         {
-            return (_visibleCards.Count == _cards.Count) ? _status : _visibleStatus;
+            return _visibleStatus;
         }
 
         protected set
@@ -57,13 +57,14 @@ public class Hand
         if (_visibleCards.Count == _cards.Count)
         {
             _visibleValue = _value;
+            _visibleStatus = _status;
             return;
         }
 
         UpdateHandSelectedValues(_visibleCards, _visibleValue, _visibleStatus);
     }
 
-    protected virtual void UpdateHandSelectedValues(IEnumerable<Card> cards, int value, HandStatus status)
+    protected virtual void UpdateHandSelectedValues(IEnumerable<Card> cards, ref int value, HandStatus status)
     {
         if (value <= 11)
         {
