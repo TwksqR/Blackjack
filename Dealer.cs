@@ -48,9 +48,9 @@ public static class Dealer
         {
             10,
             2,
-            1,
+            10,
             6,
-            3,
+            6,
             9,
             5,
         };

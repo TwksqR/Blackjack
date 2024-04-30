@@ -47,13 +47,14 @@ public class Hand
     {
         _value = _cards.Sum(card => card.Value);
 
-        UpdateHandSelectedValues(_cards, _value, _status);
+        UpdateHandSelectedValues(_cards, ref _value, ref _status);
     }
 
     protected virtual void UpdateVisibleHandValues(object? sender, EventArgs e)
     {
         _visibleCards = _cards.Where(card => card.IsVisible).ToList();
 
+        // Total value was already calculated, no need to calculate it again
         if (_visibleCards.Count == _cards.Count)
         {
             _visibleValue = _value;
@@ -61,10 +62,10 @@ public class Hand
             return;
         }
 
-        UpdateHandSelectedValues(_visibleCards, _visibleValue, _visibleStatus);
+        UpdateHandSelectedValues(_visibleCards, ref _visibleValue, ref _visibleStatus);
     }
 
-    protected virtual void UpdateHandSelectedValues(IEnumerable<Card> cards, ref int value, HandStatus status)
+    protected virtual void UpdateHandSelectedValues(IEnumerable<Card> cards, ref int value, ref HandStatus status)
     {
         if (value <= 11)
         {
