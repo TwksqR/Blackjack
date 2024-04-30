@@ -3,7 +3,7 @@ namespace Twksqr.Blackjack;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-public class Card : INotifyPropertyChanged
+public class Card
 {
     public int Rank { get; }
     public Suit Suit { get; }
@@ -15,24 +15,24 @@ public class Card : INotifyPropertyChanged
     {
         get
         { 
-            return (IsFaceUp) ? _shortName : "??";
+            return (IsVisible) ? _shortName : "??";
         }
     }
 
-    private bool _isFaceUp = false;
-    public bool IsFaceUp
+    private bool _isVisible = false;
+    public bool IsVisible
     {
-        get { return _isFaceUp; }
+        get { return _isVisible; }
 
         set
         {
-            _isFaceUp = value;
+            _isVisible = value;
 
-            NotifyPropertyChanged();
+            NotifyVisibilityChanged();
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler? VisibilityChanged;
 
     public Card(int rank, Suit suit)
     {
@@ -73,9 +73,9 @@ public class Card : INotifyPropertyChanged
         return (card1.Rank == card2.Rank) && (card1.Suit == card2.Suit);
     }
 
-    private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+    private void NotifyVisibilityChanged()
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        VisibilityChanged?.Invoke(this, EventArgs.Empty);
     }
 }
 

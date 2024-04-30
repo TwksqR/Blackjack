@@ -1,12 +1,12 @@
 namespace Twksqr.Blackjack;
 
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 // https://stackoverflow.com/a/54565283
 public class Hand
 {
-    protected readonly ObservableCollection<Card> _cards = new();
+    protected ObservableCollection<Card> _cards = new();
+    protected List<Card> _visibleCards = new();
     
     private int _value;
     private int _visibleValue;
@@ -14,77 +14,84 @@ public class Hand
     {
         get
         {
-            return (AllCardsAreFaceUp) ? _value : _visibleValue;
-        }
-         
-        private set
-        {
-            _value = value;
+            return (_visibleCards.Count == _cards.Count) ? _value : _visibleValue;
         }
     }
 
-    public bool AllCardsAreFaceUp { get; private set; }
+    private HandStatus _status;
+    private HandStatus _visibleStatus;
+    public HandStatus Status
+    {
+        get
+        {
+            return (_visibleCards.Count == _cards.Count) ? _status : _visibleStatus;
+        }
 
-    public HandStatus Status { get; protected set; } = HandStatus.Active;
+        protected set
+        {
+            _status = _visibleStatus = value;
+        }
+    }
 
-    public event PropertyChangedEventHandler CardPropertyChanged;
+    public event EventHandler CardVisibilityChanged;
 
     public Hand()
     {
-        _cards.CollectionChanged += CheckAllCardsAreFaceUp;
-        _cards.CollectionChanged += UpdateValue;
+        _cards.CollectionChanged += UpdateHandValues;
+        _cards.CollectionChanged += UpdateVisibleHandValues;
 
-        CardPropertyChanged += CheckAllCardsAreFaceUp;
-
-        // Redundant as there can only ever be one face-down card maximum; the difference in value would be _value and _visibleValue
-        // CardPropertyChanged += UpdateValue;
+        CardVisibilityChanged += UpdateVisibleHandValues;
     }
 
-    protected virtual void UpdateValue(object? sender, EventArgs e)
+    protected virtual void UpdateHandValues(object? sender, EventArgs e)
     {
-        Value = GetUpdatedValue(_cards);
-        _visibleValue = GetUpdatedValue(_cards.Where(card => card.IsFaceUp));
+        _value = _cards.Sum(card => card.Value);
+
+        UpdateHandSelectedValues(_cards, _value, _status);
     }
 
-    protected virtual int GetUpdatedValue(IEnumerable<Card> cards)
+    protected virtual void UpdateVisibleHandValues(object? sender, EventArgs e)
     {
-        int value = cards.Sum(card => card.Value);
+        _visibleCards = _cards.Where(card => card.IsVisible).ToList();
 
+        if (_visibleCards.Count == _cards.Count)
+        {
+            _visibleValue = _value;
+            return;
+        }
+
+        UpdateHandSelectedValues(_visibleCards, _visibleValue, _visibleStatus);
+    }
+
+    protected virtual void UpdateHandSelectedValues(IEnumerable<Card> cards, int value, HandStatus status)
+    {
         if (value <= 11)
         {
             if (!cards.Any(card => card.Value == 1))
             {
-                return value;
+                return;
             }
 
             value += 10;
         }
         else if (value > 21)
         {
-            Status = HandStatus.Busted;
-            return value;
+            status = HandStatus.Busted;
+            return;
         }
 
         if (value == 21)
         {
-            Status = ((cards.Count() == 2) && (Status != HandStatus.Split)) ? HandStatus.Blackjack : HandStatus.Stood;
+            status = ((cards.Count() == 2) && (Status != HandStatus.Split)) ? HandStatus.Blackjack : HandStatus.Stood;
         }
-
-        return value;
     }
 
-    // Erroneous method name, but what else is there?
-    private void CheckAllCardsAreFaceUp(object? sender, EventArgs e)
-    {
-        AllCardsAreFaceUp = _cards.All(card => card.IsFaceUp);
-    }
-
-    public void DealCard(IList<Card> oldCollection, bool dealtCardIsFaceUp)
+    public void DealCard(IList<Card> oldCollection, bool dealtCardIsVisible)
     {
         Card dealtCard = oldCollection[^1];
         oldCollection.Remove(dealtCard);
 
-        dealtCard.IsFaceUp = dealtCardIsFaceUp;
+        dealtCard.IsVisible = dealtCardIsVisible;
 
         Add(dealtCard);
     }
@@ -94,14 +101,14 @@ public class Hand
         return string.Join(' ', _cards.Select(card => card.ShortName));
     }
 
-    private void NotifyCardPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    private void NotifyCardVisibilityChanged(object? sender, EventArgs e)
     {
-        CardPropertyChanged?.Invoke(sender, e);
+        CardVisibilityChanged?.Invoke(sender, e);
     }
 
     public void Add(Card item)
     {
-        item.PropertyChanged += NotifyCardPropertyChanged;
+        item.VisibilityChanged += NotifyCardVisibilityChanged;
         _cards.Add(item);
     }
 
@@ -109,12 +116,13 @@ public class Hand
     {
         foreach (var card in _cards)
         {
-            card.PropertyChanged -= NotifyCardPropertyChanged;
+            card.VisibilityChanged -= NotifyCardVisibilityChanged;
         }
 
         _cards.Clear();
 
-        Status = HandStatus.Active;
+        _status = HandStatus.Active;
+        _visibleStatus = HandStatus.Active;
     }
 
     public int Count => _cards.Count;
@@ -126,7 +134,7 @@ public class Hand
 
     public bool Remove(Card item)
     {
-        item.PropertyChanged -= NotifyCardPropertyChanged;
+        item.VisibilityChanged -= NotifyCardVisibilityChanged;
         return _cards.Remove(item);
     }
 
@@ -137,7 +145,7 @@ public class Hand
 
     public void Insert(int index, Card item)
     {
-        item.PropertyChanged += NotifyCardPropertyChanged;
+        item.VisibilityChanged += NotifyCardVisibilityChanged;
         _cards.Insert(index, item);
     }
 
@@ -148,7 +156,7 @@ public class Hand
             throw new ArgumentOutOfRangeException(nameof(index));
         }
 
-        _cards[index].PropertyChanged -= NotifyCardPropertyChanged;
+        _cards[index].VisibilityChanged -= NotifyCardVisibilityChanged;
         _cards.RemoveAt(index);
     }
 

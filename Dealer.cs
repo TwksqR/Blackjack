@@ -46,7 +46,13 @@ public static class Dealer
     {
         var cardValues = new int[]
         {
-            
+            10,
+            2,
+            11,
+            7,
+            3,
+            9,
+            5,
         };
 
         foreach (int cardValue in cardValues)
@@ -63,7 +69,7 @@ public static class Dealer
 
         Thread.Sleep(2000);
 
-        Hand[0].IsFaceUp = true;
+        Hand[0].IsVisible = true;
 
         Console.Clear();
 

@@ -93,7 +93,7 @@ public static class GameManager
 
         Dealer.ShuffleDeck(Dealer.Deck);
 
-        // Dealer.Deck.AddDebugCards();
+        Dealer.Deck.AddDebugCards();
 
         do
         {
@@ -243,7 +243,7 @@ public static class GameManager
 
             Console.Clear();
 
-            Dealer.Hand[0].IsFaceUp = true;
+            Dealer.Hand[0].IsVisible = true;
 
             if (Dealer.Hand.Status == HandStatus.Blackjack)
             {
@@ -348,7 +348,7 @@ public static class GameManager
             }
             else
             {
-                Dealer.Hand[0].IsFaceUp = false;
+                Dealer.Hand[0].IsVisible = false;
 
                 ConsoleUI.WriteColoredLine("Dealer does not have Blackjack.", ConsoleColor.White);
 
@@ -607,7 +607,7 @@ public static class GameManager
 
             Thread.Sleep(2000);
 
-            hand[^1].IsFaceUp = true;
+            hand[^1].IsVisible = true;
 
             Console.Clear();
 
