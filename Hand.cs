@@ -22,8 +22,6 @@ public class Hand
         protected set => _status = _visibleStatus = value;
     }
 
-    public event EventHandler CardVisibilityChanged;
-
     public Hand()
     {
         _cards.CollectionChanged += UpdateHandValues;
@@ -33,6 +31,8 @@ public class Hand
     }
 
     // public delegate void CardCollectionChangedEventHandler(CardCollectionChangedEventArgs e);
+
+    public event EventHandler CardVisibilityChanged; // public event CollectionChangedEventHandler CardVisibilityChanged;
 
     protected virtual void UpdateHandValues(object? sender, EventArgs e)
     {
