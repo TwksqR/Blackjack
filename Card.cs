@@ -29,6 +29,8 @@ public class Card
         }
     }
 
+    // public delegate void VisibilityChangedEventHandler(Card changedCard);
+
     public event EventHandler? VisibilityChanged;
 
     public Card(int rank, Suit suit)

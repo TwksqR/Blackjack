@@ -32,6 +32,8 @@ public class Hand
         CardVisibilityChanged += UpdateVisibleHandValues;
     }
 
+    // public delegate void CardCollectionChangedEventHandler(CardCollectionChangedEventArgs e);
+
     protected virtual void UpdateHandValues(object? sender, EventArgs e)
     {
         _value = _cards.Sum(card => card.Value);
