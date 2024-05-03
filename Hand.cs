@@ -6,15 +6,15 @@ public class Hand
     protected ObservableCollection<Card> _cards = new();
     protected List<Card> _visibleCards = new();
     
-    private int _value;
-    private int _visibleValue;
+    protected int _value;
+    protected int _visibleValue;
     public int Value
     {
         get => _visibleValue;
     }
 
-    private HandStatus _status;
-    private HandStatus _visibleStatus;
+    protected HandStatus _status;
+    protected HandStatus _visibleStatus;
     public HandStatus Status
     {
         get => _visibleStatus;
