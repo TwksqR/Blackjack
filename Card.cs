@@ -19,7 +19,7 @@ public class Card
     private bool _isVisible = false;
     public bool IsVisible
     {
-        get { return _isVisible; }
+        get => _isVisible;
 
         set
         {

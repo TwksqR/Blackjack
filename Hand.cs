@@ -12,25 +12,16 @@ public class Hand
     private int _visibleValue;
     public int Value
     {
-        get
-        {
-            return _visibleValue;
-        }
+        get => _visibleValue;
     }
 
     private HandStatus _status;
     private HandStatus _visibleStatus;
     public HandStatus Status
     {
-        get
-        {
-            return _visibleStatus;
-        }
+        get => _visibleStatus;
 
-        protected set
-        {
-            _status = _visibleStatus = value;
-        }
+        protected set => _status = _visibleStatus = value;
     }
 
     public event EventHandler CardVisibilityChanged;

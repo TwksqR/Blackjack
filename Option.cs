@@ -7,12 +7,9 @@ public class Option
     private string _name = "Option";
     public string Name
     {
-        get { return _name; }
-
-        set
-        {
-            _name = (!string.IsNullOrWhiteSpace(value)) ? value : _name;
-        }
+        get => _name;
+        
+        set => _name = (!string.IsNullOrWhiteSpace(value)) ? value : _name;
     }
 
     public Option(string name, Action<Player> action)
