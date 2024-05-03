@@ -1,7 +1,5 @@
 namespace Twksqr.Blackjack;
 
-using System.Collections.ObjectModel;
-
 // https://stackoverflow.com/a/54565283
 public class Hand
 {
