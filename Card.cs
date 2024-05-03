@@ -23,9 +23,11 @@ public class Card
 
         set
         {
-            _isVisible = value;
-
-            NotifyVisibilityChanged();
+            if (_isVisible != value)
+            {
+                _isVisible = value;
+                NotifyVisibilityChanged();
+            }
         }
     }
 
