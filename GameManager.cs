@@ -93,7 +93,7 @@ public static class GameManager
 
         Dealer.ShuffleDeck(Dealer.Deck);
 
-        Dealer.Deck.AddDebugCards();
+        // Dealer.Deck.AddDebugCards();
 
         do
         {
