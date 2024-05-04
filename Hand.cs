@@ -65,6 +65,11 @@ public class Hand
 
     public void DealCard(Hand oldHand, bool dealtCardIsVisible)
     {
+        if (oldHand.Count < 1)
+        {
+            return;
+        }
+
         Card dealtCard = oldHand[^1];
         oldHand.Remove(dealtCard);
 
