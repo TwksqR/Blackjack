@@ -157,7 +157,13 @@ public class Hand
     public Card this[int index]
     {
         get => _cards[index];
-        set => _cards[index] = value;
+
+        set
+        {
+            _cards[index] = value;
+            
+            NotifyCardCollectionChanged(this, EventArgs.Empty);
+        }
     }
 
     private void NotifyCardVisibilityChanged(object? sender, EventArgs e)
