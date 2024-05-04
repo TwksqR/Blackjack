@@ -11,7 +11,7 @@ public sealed class PlayerHand : Hand
 
         if (Settings.FiveCardCharlieIsEnabled)
         {
-            _cards.CollectionChanged += CheckFiveChardCharlie;
+            CardCollectionChanged += CheckFiveChardCharlie;
         }
     }
 

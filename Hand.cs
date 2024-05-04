@@ -3,7 +3,7 @@ namespace Twksqr.Blackjack;
 // https://stackoverflow.com/a/54565283
 public class Hand
 {
-    protected ObservableCollection<Card> _cards = new();
+    protected List<Card> _cards = new();
     protected List<Card> _visibleCards = new();
     
     protected int _value;
@@ -24,14 +24,15 @@ public class Hand
 
     public Hand()
     {
-        _cards.CollectionChanged += UpdateHandValues;
-        _cards.CollectionChanged += UpdateVisibleHandValues;
+        CardCollectionChanged += UpdateHandValues;
+        CardCollectionChanged += UpdateVisibleHandValues;
 
         CardVisibilityChanged += UpdateVisibleHandValues;
     }
 
     // public delegate void CardCollectionChangedEventHandler(CardCollectionChangedEventArgs e);
 
+    public event EventHandler CardCollectionChanged; // public event CollectionChangedEventHandler CardCollectionChanged;
     public event EventHandler CardVisibilityChanged; // public event CollectionChangedEventHandler CardVisibilityChanged;
 
     protected virtual void UpdateHandValues(object? sender, EventArgs e)
@@ -82,20 +83,27 @@ public class Hand
         Add(dealtCard);
     }
 
+    public void DealCard(Hand oldHand, bool dealtCardIsVisible)
+    {
+        Card dealtCard = oldHand[^1];
+        oldHand.Remove(dealtCard);
+
+        dealtCard.IsVisible = dealtCardIsVisible;
+
+        Add(dealtCard);
+    }
+
     public string GetCardShortNames()
     {
         return string.Join(' ', _cards.Select(card => card.ShortName));
     }
 
-    private void NotifyCardVisibilityChanged(object? sender, EventArgs e)
+    public void Add(Card card)
     {
-        CardVisibilityChanged?.Invoke(sender, e);
-    }
+        card.VisibilityChanged += NotifyCardVisibilityChanged;
+        _cards.Add(card);
 
-    public void Add(Card item)
-    {
-        item.VisibilityChanged += NotifyCardVisibilityChanged;
-        _cards.Add(item);
+        NotifyCardCollectionChanged(this, EventArgs.Empty);
     }
 
     public void Clear()
@@ -109,46 +117,56 @@ public class Hand
 
         _status = HandStatus.Active;
         _visibleStatus = HandStatus.Active;
+
+        NotifyCardCollectionChanged(this, EventArgs.Empty);
+    }
+
+    public bool Contains(Card card)
+    {
+        return _cards.Contains(card);
     }
 
     public int Count => _cards.Count;
 
-    public bool Contains(Card item)
+    public int IndexOf(Card card)
     {
-        return _cards.Contains(item);
+        return _cards.IndexOf(card);
     }
 
-    public bool Remove(Card item)
+    public void Insert(int index, Card card)
     {
-        item.VisibilityChanged -= NotifyCardVisibilityChanged;
-        return _cards.Remove(item);
+        card.VisibilityChanged += NotifyCardVisibilityChanged;
+        _cards.Insert(index, card);
+
+        NotifyCardCollectionChanged(this, EventArgs.Empty);
     }
 
-    public int IndexOf(Card item)
+    public bool Remove(Card card)
     {
-        return _cards.IndexOf(item);
-    }
+        card.VisibilityChanged -= NotifyCardVisibilityChanged;
+        bool removeSuccessful = _cards.Remove(card);
 
-    public void Insert(int index, Card item)
-    {
-        item.VisibilityChanged += NotifyCardVisibilityChanged;
-        _cards.Insert(index, item);
-    }
-
-    public void RemoveAt(int index)
-    {
-        if (index < 0 || index >= Count)
+        if (removeSuccessful)
         {
-            throw new ArgumentOutOfRangeException(nameof(index));
+            NotifyCardCollectionChanged(this, EventArgs.Empty);
         }
 
-        _cards[index].VisibilityChanged -= NotifyCardVisibilityChanged;
-        _cards.RemoveAt(index);
+        return removeSuccessful;
     }
 
     public Card this[int index]
     {
         get => _cards[index];
         set => _cards[index] = value;
+    }
+
+    private void NotifyCardVisibilityChanged(object? sender, EventArgs e)
+    {
+        CardVisibilityChanged?.Invoke(sender, e);
+    }
+
+    private void NotifyCardCollectionChanged(object? sender, EventArgs e)
+    {
+        CardCollectionChanged?.Invoke(sender, e);
     }
 }
