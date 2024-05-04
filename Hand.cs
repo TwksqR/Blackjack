@@ -6,28 +6,15 @@ public class Hand
     protected List<Card> _cards = new();
     protected List<Card> _visibleCards = new();
     
-    protected int _value;
-    protected int _visibleValue;
-    public int Value
-    {
-        get => _visibleValue;
-    }
+    public int Value { get; protected set; }
 
-    protected HandStatus _status;
-    protected HandStatus _visibleStatus;
-    public HandStatus Status
-    {
-        get => _visibleStatus;
-
-        protected set => _status = _visibleStatus = value;
-    }
+    public HandStatus Status { get; protected set; }
 
     public Hand()
     {
-        CardCollectionChanged += UpdateHandValues;
-        CardCollectionChanged += UpdateVisibleHandValues;
+        CardCollectionChanged += UpdateValue;
 
-        CardVisibilityChanged += UpdateVisibleHandValues;
+        CardVisibilityChanged += UpdateValue;
     }
 
     // public delegate void CardCollectionChangedEventHandler(CardCollectionChangedEventArgs e);
@@ -35,41 +22,29 @@ public class Hand
     public event EventHandler CardCollectionChanged; // public event CollectionChangedEventHandler CardCollectionChanged;
     public event EventHandler CardVisibilityChanged; // public event CollectionChangedEventHandler CardVisibilityChanged;
 
-    protected virtual void UpdateHandValues(object? sender, EventArgs e)
-    {
-        _value = _cards.Sum(card => card.Value);
-
-        UpdateHandSelectedValues(_cards, ref _value, ref _status);
-    }
-
-    protected virtual void UpdateVisibleHandValues(object? sender, EventArgs e)
+    protected virtual void UpdateValue(object? sender, EventArgs e)
     {
         _visibleCards = _cards.Where(card => card.IsVisible).ToList();
-        _visibleValue = _visibleCards.Sum(card => card.Value);
+        Value = _visibleCards.Sum(card => card.Value);
 
-        UpdateHandSelectedValues(_visibleCards, ref _visibleValue, ref _visibleStatus);
-    }
-
-    protected virtual void UpdateHandSelectedValues(IEnumerable<Card> cards, ref int value, ref HandStatus status)
-    {
-        if (value <= 11)
+        if (Value <= 11)
         {
-            if (!cards.Any(card => card.Value == 1))
+            if (!_visibleCards.Any(card => card.Value == 1))
             {
                 return;
             }
 
-            value += 10;
+            Value += 10;
         }
-        else if (value > 21)
+        else if (Value > 21)
         {
-            status = HandStatus.Busted;
+            Status = HandStatus.Busted;
             return;
         }
 
-        if (value == 21)
+        if (Value == 21)
         {
-            status = ((cards.Count() == 2) && (Status != HandStatus.Split)) ? HandStatus.Blackjack : HandStatus.Stood;
+            Status = ((_visibleCards.Count == 2) && (Status != HandStatus.Split)) ? HandStatus.Blackjack : HandStatus.Stood;
         }
     }
 
@@ -120,8 +95,7 @@ public class Hand
 
         _cards.Clear();
 
-        _status = HandStatus.Active;
-        _visibleStatus = HandStatus.Active;
+        Status = HandStatus.Active;
 
         NotifyCardCollectionChanged(this, EventArgs.Empty);
     }

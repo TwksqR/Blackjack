@@ -73,3 +73,18 @@ C:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\refint\Blackjack.dll
 C:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.pdb
 C:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.genruntimeconfig.cache
 C:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\ref\Blackjack.dll
+D:\Coding\Local Projects\Twksqr\Blackjack\bin\Debug\net7.0\Blackjack.exe
+D:\Coding\Local Projects\Twksqr\Blackjack\bin\Debug\net7.0\Blackjack.deps.json
+D:\Coding\Local Projects\Twksqr\Blackjack\bin\Debug\net7.0\Blackjack.runtimeconfig.json
+D:\Coding\Local Projects\Twksqr\Blackjack\bin\Debug\net7.0\Blackjack.dll
+D:\Coding\Local Projects\Twksqr\Blackjack\bin\Debug\net7.0\Blackjack.pdb
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.csproj.AssemblyReference.cache
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.GeneratedMSBuildEditorConfig.editorconfig
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.AssemblyInfoInputs.cache
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.AssemblyInfo.cs
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.csproj.CoreCompileInputs.cache
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.dll
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\refint\Blackjack.dll
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.pdb
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.genruntimeconfig.cache
+D:\Coding\Local Projects\Twksqr\Blackjack\obj\Debug\net7.0\ref\Blackjack.dll
