@@ -44,14 +44,7 @@ public class Hand
     protected virtual void UpdateVisibleHandValues(object? sender, EventArgs e)
     {
         _visibleCards = _cards.Where(card => card.IsVisible).ToList();
-
-        // Total value was already calculated, no need to calculate it again
-        if (_visibleCards.Count == _cards.Count)
-        {
-            _visibleValue = _value;
-            _visibleStatus = _status;
-            return;
-        }
+        _visibleValue = _visibleCards.Sum(card => card.Value);
 
         UpdateHandSelectedValues(_visibleCards, ref _visibleValue, ref _visibleStatus);
     }
