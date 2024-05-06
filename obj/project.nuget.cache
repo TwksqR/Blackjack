@@ -1,13 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "sTr+jVnqexCg6NtqFVuE95l6VWUYzniLXo4xMQpp1XfoIbOL4IiDCEUmUiOzNxzlYog2uko0F18u1NxlIVnSuQ==",
+  "dgSpecHash": "mtgirc6vTIK20eKyooNPXH+re1rgnmSaNeUDLRQW8Is1L4BubahCEykuBRhkbBvVUSO9oDDn6fY5KrpiZbEdIg==",
   "success": true,
-  "projectFilePath": "C:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\joshua\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.17\\microsoft.netcore.app.ref.7.0.17.nupkg.sha512",
-    "C:\\Users\\joshua\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.17\\microsoft.windowsdesktop.app.ref.7.0.17.nupkg.sha512",
-    "C:\\Users\\joshua\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.17\\microsoft.aspnetcore.app.ref.7.0.17.nupkg.sha512",
-    "C:\\Users\\joshua\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.17\\microsoft.netcore.app.host.win-x64.7.0.17.nupkg.sha512"
-  ],
+  "projectFilePath": "D:\\Coding\\Local Projects\\Twksqr\\Blackjack\\Blackjack.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }
