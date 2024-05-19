@@ -13,4 +13,4 @@ A Blackjack Simulator.
 - A player cannot double down for less.
 
 *These rules are subject to change.*
-*Settings may be added in a future version, so that these rules may be altered.*
+*GameSettings may be added in a future version, so that these rules may be altered.*

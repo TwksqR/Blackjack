@@ -1,18 +1,18 @@
 namespace Twksqr.Blackjack;
 
-internal static class Settings
+internal class Settings
 {
-    internal static readonly int MaxRounds = 0;
-    internal static readonly bool PlayersCanLeaveBeforeLastRound = false;
+    internal readonly int MaxRounds;
+    internal readonly bool PlayersCanLeaveBeforeLastRound;
 
-    internal static readonly int MinPlayers = 1;
-    internal static readonly int MaxPlayers = 7;
+    internal readonly int MinPlayers;
+    internal readonly int MaxPlayers;
 
-    internal static readonly int InitialMoney = 100;
+    internal readonly int InitialMoney;
 
-    internal static readonly int MinBet = 5;
-    internal static readonly int MaxBet = 50;
+    internal readonly int MinBet;
+    internal readonly int MaxBet;
 
-    internal static readonly bool DoubledDownCardsAreHidden = true;
-    internal static readonly bool FiveCardCharlieIsEnabled = true;
+    internal readonly bool DoubledDownCardsAreHidden;
+    internal readonly bool FiveCardCharlieIsEnabled;
 }

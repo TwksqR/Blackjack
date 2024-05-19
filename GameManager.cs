@@ -1,9 +1,12 @@
 namespace Twksqr.Blackjack;
 
+using System.Text.Json;
 using TwksqR;
 
 public static class GameManager
 {
+    internal static readonly Settings GameSettings = GetSettings();
+
     private static readonly List<Player> _players = new();
 
     public static void Execute()
@@ -18,6 +21,12 @@ public static class GameManager
         ConsoleUI.DisplayButton("Let's play!");
 
         StartGame();
+    }
+
+    private static Settings GetSettings()
+    {
+        string settingsString = File.ReadAllText(@"D:\Coding\Local Projects\Twksqr\Blackjack\settings.json");
+        return JsonSerializer.Deserialize<Settings>(settingsString)!;
     }
 
     private static void StartGame()
@@ -42,7 +51,7 @@ public static class GameManager
                 ConsoleUI.WriteColoredLine("Enter player count:", ConsoleColor.Cyan);
                 ConsoleUI.TryRead(out playerCount);
 
-                playerCountIsValid = (Settings.MinPlayers <= playerCount) && (playerCount <= Settings.MaxPlayers);
+                playerCountIsValid = (GameSettings.MinPlayers <= playerCount) && (playerCount <= GameSettings.MaxPlayers);
             }
             while (!playerCountIsValid);
 
@@ -103,7 +112,7 @@ public static class GameManager
 
             for (int i = 0; i < _players.Count; i++)
             {
-                if (_players[i].Money < Settings.MinBet)
+                if (_players[i].Money < GameSettings.MinBet)
                 {
                     ConsoleUI.WriteColoredLine($"{_players[i].Name} has bust out!", ConsoleColor.Red);
 
@@ -115,7 +124,7 @@ public static class GameManager
                 }
             }
 
-            if (roundNumber == Settings.MaxRounds)
+            if (roundNumber == GameSettings.MaxRounds)
             {
                 foreach (var player in _players)
                 {
@@ -129,7 +138,7 @@ public static class GameManager
                 break;
             }
 
-            if ((Settings.MaxRounds == 0) || Settings.PlayersCanLeaveBeforeLastRound)
+            if ((GameSettings.MaxRounds == 0) || GameSettings.PlayersCanLeaveBeforeLastRound)
             {
                 for (int i = 0; i < _players.Count; i++)
                 {
@@ -181,7 +190,7 @@ public static class GameManager
     {
         Console.Clear();
 
-        string roundDisplay = (Settings.MaxRounds > 0) ? $"Round {roundNumber}/{Settings.MaxRounds}" : $"Round {roundNumber}";
+        string roundDisplay = (GameSettings.MaxRounds > 0) ? $"Round {roundNumber}/{GameSettings.MaxRounds}" : $"Round {roundNumber}";
 
         ConsoleUI.WriteColoredLine(roundDisplay, ConsoleColor.Magenta);
 
@@ -447,13 +456,13 @@ public static class GameManager
 
                 do
                 {
-                    ConsoleUI.WriteColoredLine($"{player.Name}, enter your bet.\n(min: {string.Format("{0:C}", Settings.MinBet)}, max: {string.Format("{0:C}", Settings.MaxBet)}, must be a whole number)", ConsoleColor.Cyan);
+                    ConsoleUI.WriteColoredLine($"{player.Name}, enter your bet.\n(min: {string.Format("{0:C}", GameSettings.MinBet)}, max: {string.Format("{0:C}", GameSettings.MaxBet)}, must be a whole number)", ConsoleColor.Cyan);
                     ConsoleUI.WriteColoredLine($"Money: {string.Format("{0:C}", player.Money)}", ConsoleColor.Green);
                     ConsoleUI.TryRead(out playerBet);
 
                     Console.Clear();
 
-                    playerBetIsValid = (playerBet <= player.Money) && (playerBet >= Settings.MinBet) && (playerBet <= Settings.MaxBet);
+                    playerBetIsValid = (playerBet <= player.Money) && (playerBet >= GameSettings.MinBet) && (playerBet <= GameSettings.MaxBet);
 
                     if (!playerBetIsValid)
                     {
@@ -593,7 +602,7 @@ public static class GameManager
 
     private static void DisplayHandSettlement(PlayerHand hand, Player player)
     {
-        if (Settings.DoubledDownCardsAreHidden && (hand.Status == HandStatus.DoubledDown))
+        if (GameSettings.DoubledDownCardsAreHidden && (hand.Status == HandStatus.DoubledDown))
         {
             Console.Clear();
 

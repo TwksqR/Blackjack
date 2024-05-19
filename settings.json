@@ -8,5 +8,8 @@
     "InitialMoney": 100,
 
     "MinBet": 5,
-    "MaxBet": 50
+    "MaxBet": 50,
+
+    "DoubledDownCardsAreHidden": true,
+    "FiveCardCharlieIsEnabled": true
 }

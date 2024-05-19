@@ -9,7 +9,7 @@ public sealed class PlayerHand : Hand
     {
         Bet = bet;
 
-        if (Settings.FiveCardCharlieIsEnabled)
+        if (GameManager.GameSettings.FiveCardCharlieIsEnabled)
         {
             CardCollectionChanged += CheckFiveChardCharlie;
         }
@@ -55,7 +55,7 @@ public sealed class PlayerHand : Hand
             owner.Money -= Bet;
             Bet *= 2;
 
-            DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
+            DealCard(Dealer.Deck, !GameManager.GameSettings.DoubledDownCardsAreHidden);
 
             Status = HandStatus.DoubledDown;
         }
