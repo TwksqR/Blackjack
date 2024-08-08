@@ -1,18 +1,18 @@
 namespace Twksqr.Blackjack;
 
-internal class Settings
+public class Settings
 {
-    internal readonly int MaxRounds;
-    internal readonly bool PlayersCanLeaveBeforeLastRound;
+    public readonly int MaxRounds;
+    public readonly bool PlayersCanLeaveBeforeLastRound;
 
-    internal readonly int MinPlayers;
-    internal readonly int MaxPlayers;
+    public readonly int MinPlayers;
+    public readonly int MaxPlayers;
 
-    internal readonly int InitialMoney;
+    public readonly int InitialMoney;
 
-    internal readonly int MinBet;
-    internal readonly int MaxBet;
+    public readonly int MinBet;
+    public readonly int MaxBet;
 
-    internal readonly bool DoubledDownCardsAreHidden;
-    internal readonly bool FiveCardCharlieIsEnabled;
+    public readonly bool DoubledDownCardsAreHidden;
+    public readonly bool FiveCardCharlieIsEnabled;
 }

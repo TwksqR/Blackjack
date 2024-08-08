@@ -1,11 +1,12 @@
 namespace Twksqr.Blackjack;
 
+using System.IO;
 using System.Text.Json;
 using TwksqR;
 
 public static class GameManager
 {
-    internal static readonly Settings GameSettings = GetSettings();
+    public static readonly Settings GameSettings = GetGameSettings(@"C:\Coding\Twksqr\Blackjack\settings.json");
 
     private static readonly List<Player> _players = new();
 
@@ -23,10 +24,14 @@ public static class GameManager
         StartGame();
     }
 
-    private static Settings GetSettings()
+    private static Settings GetGameSettings(string directory)
     {
-        string settingsString = File.ReadAllText(@"D:\Coding\Local Projects\Twksqr\Blackjack\settings.json");
-        return JsonSerializer.Deserialize<Settings>(settingsString)!;
+        string settingsText = File.ReadAllText(directory);
+
+        Console.WriteLine(settingsText);
+        ConsoleUI.DisplayButtonPressEnter();
+
+        return JsonSerializer.Deserialize<Settings>(settingsText)!;
     }
 
     private static void StartGame()
