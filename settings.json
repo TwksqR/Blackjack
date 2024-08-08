@@ -1,0 +1,15 @@
+{
+    "MaxRounds": 0,
+    "PlayersCanLeaveBeforeLastRound": false,
+
+    "MinPlayers": 1,
+    "MaxPlayers": 7,
+
+    "InitialMoney": 100,
+
+    "MinBet": 5,
+    "MaxBet": 50,
+
+    "DoubledDownCardsAreHidden": true,
+    "FiveCardCharlieIsEnabled": true
+}

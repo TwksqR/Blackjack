@@ -9,7 +9,7 @@ public sealed class PlayerHand : Hand
     {
         Bet = bet;
 
-        if (Settings.FiveCardCharlieIsEnabled)
+        if (GameManager.GameSettings.FiveCardCharlieIsEnabled)
         {
             CardCollectionChanged += CheckFiveChardCharlie;
         }
@@ -25,7 +25,7 @@ public sealed class PlayerHand : Hand
 
         if (_cards.Count == 2)
         {
-            if (owner.Winnings >= Bet)
+            if (owner.Money >= Bet)
             {
                 turnOptions.Add(new Option("Double Down", DoubleDown));
 
@@ -52,17 +52,17 @@ public sealed class PlayerHand : Hand
 
         void DoubleDown(Player owner)
         {
-            owner.Winnings -= Bet;
+            owner.Money -= Bet;
             Bet *= 2;
 
-            DealCard(Dealer.Deck, !Settings.DoubledDownCardsAreHidden);
+            DealCard(Dealer.Deck, !GameManager.GameSettings.DoubledDownCardsAreHidden);
 
             Status = HandStatus.DoubledDown;
         }
 
         void Split(Player owner)
         {   
-            owner.Winnings -= Bet;
+            owner.Money -= Bet;
 
             var newHand = new PlayerHand(Bet);
 
@@ -76,7 +76,7 @@ public sealed class PlayerHand : Hand
 
         void Surrender(Player owner)
         {
-            owner.Winnings += Bet / 2m;
+            owner.Money += Bet / 2m;
 
             Status = HandStatus.Surrendered;
         }
@@ -94,7 +94,7 @@ public sealed class PlayerHand : Hand
         {
             InsuranceBet = Bet / 2m;
 
-            player.Winnings -= InsuranceBet;
+            player.Money -= InsuranceBet;
         }
 
         void IgnoreInsurance(Player player) {}
