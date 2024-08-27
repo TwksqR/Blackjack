@@ -1,5 +1,6 @@
 namespace Twksqr.Blackjack;
 
+using System.Reflection;
 using TwksqR;
 
 public static class GameManager
@@ -9,13 +10,35 @@ public static class GameManager
     public static void DisplayStartScreen(string[] args)
     {
         Console.Clear();
-        Console.CursorVisible = false;
 
-        ConsoleUI.WriteColoredLine("Blackjack Simulator", ConsoleColor.Magenta);
+        AnsiConsole.Write(new FigletText("TwksqR's").Color(Color.Blue));
+        AnsiConsole.Write(new FigletText("Blackjack Simulator").Color(Color.Yellow));
 
-        ConsoleUI.WriteColoredLine("\nMade by TwksqR\nDiscord: twskqr\nReddit: u/GD_Stalker", ConsoleColor.Cyan);
+        // FIXME: fix possible deference to null object
+        string version = Assembly.GetEntryAssembly().GetName().Version.ToString() ?? "0.0.0.0";
+        AnsiConsole.WriteLine($"Build: {version}");
 
-        ConsoleUI.DisplayButton("Let's play!");
+        Console.WriteLine();
+
+        var contactsGrid = new Grid();
+        contactsGrid.AddColumns(2);
+        contactsGrid.AddRow("[gray]GitHub:[/]", "TwksqR");
+        contactsGrid.AddRow("[blue]Discord:[/]", "twksqr");
+        contactsGrid.AddRow("[orangered1]Reddit:[/]", "GD_Stalker");
+
+        AnsiConsole.Write(contactsGrid);
+
+        Console.WriteLine();
+
+        var startScreenPrompt = new MultiSelectionPrompt<string>()
+            .AddChoices(
+                "Enable experimental features (currently does nothing)"
+            )
+            .InstructionsText(
+                "[gray](Press [blue]<Spacebar>[/] to toggle selection, " +
+                "[green]<Enter>[/] to confirm selection)[/]"
+            );
+        List<string> startScreenOptions = AnsiConsole.Prompt(startScreenPrompt);
 
         StartGame();
     }
