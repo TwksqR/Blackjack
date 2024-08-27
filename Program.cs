@@ -7,4 +7,3 @@ public static class Program
         GameManager.Execute();
     }
 }
-
