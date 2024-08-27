@@ -6,7 +6,7 @@ public static class GameManager
 {
     private static readonly List<Player> _players = new();
 
-    public static void Execute()
+    public static void DisplayStartScreen(string[] args)
     {
         Console.Clear();
         Console.CursorVisible = false;
