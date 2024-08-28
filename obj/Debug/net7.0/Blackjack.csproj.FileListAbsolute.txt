@@ -106,3 +106,6 @@ D:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\refint\Blackjack.dll
 D:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.pdb
 D:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.genruntimeconfig.cache
 D:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\ref\Blackjack.dll
+C:\Coding\Twksqr\Blackjack\bin\Debug\net7.0\Spectre.Console.dll
+C:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.csproj.AssemblyReference.cache
+C:\Coding\Twksqr\Blackjack\obj\Debug\net7.0\Blackjack.csproj.Up2Date

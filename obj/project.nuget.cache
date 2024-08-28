@@ -1,10 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "6iP1twXpx9j7+/nAgYno4uesuv53T6f7fpUpNmv8impO/oyklOeu3ipuieWdTpbVlfxY6yqkU+M292bIL1SS2Q==",
+  "dgSpecHash": "zG8KIvkyjMasc8zv4k3LgcTWUzl7fSB4qUUDCud1rx0O97oxgj+1LzoCgBtLGM85QVPCq3jcd6o/S/olx+EvJQ==",
   "success": true,
-  "projectFilePath": "D:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj",
+  "projectFilePath": "C:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\joshua\\.nuget\\packages\\spectre.console\\0.49.1\\spectre.console.0.49.1.nupkg.sha512"
+    "C:\\Users\\joshua\\.nuget\\packages\\spectre.console\\0.49.1\\spectre.console.0.49.1.nupkg.sha512",
+    "C:\\Users\\joshua\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.17\\microsoft.aspnetcore.app.ref.7.0.17.nupkg.sha512",
+    "C:\\Users\\joshua\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.17\\microsoft.netcore.app.host.win-x64.7.0.17.nupkg.sha512",
+    "C:\\Users\\joshua\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.17\\microsoft.netcore.app.ref.7.0.17.nupkg.sha512",
+    "C:\\Users\\joshua\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.17\\microsoft.windowsdesktop.app.ref.7.0.17.nupkg.sha512"
   ],
   "logs": []
 }
