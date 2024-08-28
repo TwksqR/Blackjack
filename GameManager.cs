@@ -45,6 +45,10 @@ public static class GameManager
 
     private static void StartGame()
     {
+        // TODO: Create new class `GameSettings` with readonly properties
+        //       When a game is played, it reads from an instance of `GameSettings`
+        //       This allows preset game settings and also ensures that the settings of a game does not and cannot change in the middle of it
+        // TODO: Make a menu for changing game settings here
         int playerCount = GetPlayerCount();
 
         Console.CursorVisible = false;
