@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj": {}
+    "C:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj": {}
   },
   "projects": {
-    "D:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj": {
+    "C:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj": {
       "version": "2.2.14.3",
       "restore": {
-        "projectUniqueName": "D:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj",
+        "projectUniqueName": "C:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj",
         "projectName": "Blackjack",
-        "projectPath": "D:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj",
+        "projectPath": "C:\\Coding\\Twksqr\\Blackjack\\Blackjack.csproj",
         "packagesPath": "C:\\Users\\joshua\\.nuget\\packages\\",
-        "outputPath": "D:\\Coding\\Twksqr\\Blackjack\\obj\\",
+        "outputPath": "C:\\Coding\\Twksqr\\Blackjack\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\joshua\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -53,12 +53,30 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.17, 7.0.17]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[7.0.17, 7.0.17]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.17, 7.0.17]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.17, 7.0.17]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }
